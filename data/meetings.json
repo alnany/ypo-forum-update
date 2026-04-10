@@ -95,21 +95,35 @@
           "whatIRealize": ""
         },
         "me": {
-          "feelings": [],
-          "feelingEvents": {},
-          "whyItMatters1": "",
-          "whyItMatters2": "",
-          "whyItMatters3": "",
-          "whatIRealize": ""
+          "feelings": [
+            "Anxious",
+            "Optimistic",
+            "Creative"
+          ],
+          "feelingEvents": {
+            "Anxious": "Projects are in progress but not yielding real results yet.",
+            "Optimistic": "The projects should turn out well this year.",
+            "Creative": "Been playing a lot with AI agents and it's just so damn powerful."
+          },
+          "whyItMatters1": "I need a win.",
+          "whyItMatters2": "Because I am awesome I'm supposed to be winning.",
+          "whyItMatters3": "Validates me.",
+          "whatIRealize": "Need to be \"successful\"."
         },
         "next30": {
-          "feelings": [],
-          "outlook": ""
+          "feelings": [
+            "Optimistic",
+            "Creative",
+            "Anxious",
+            "Worried",
+            "Nervous"
+          ],
+          "outlook": "Get shit done."
         },
-        "groupLearning": "",
+        "groupLearning": "How has everyone been adopting AI?",
         "explore": ""
       },
-      "submittedAt": "2026-04-10T18:13:21.707Z"
+      "submittedAt": "2026-04-10T18:22:46.985Z"
     }
   }
 }
