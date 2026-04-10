@@ -1,5 +1,13 @@
 {
-  "meetings": [],
+  "meetings": [
+    {
+      "id": "2026-03-27",
+      "date": "2026-03-27",
+      "displayDate": "March 27, 2026",
+      "location": "Macau",
+      "createdAt": "2026-04-10T17:21:19.609Z"
+    }
+  ],
   "updates": {
     "Chris:2026-04-09": {
       "member": "Chris",
