@@ -470,6 +470,7 @@ function SectionStep({
         <FeelingsPicker
           selectedFeelings={data.feelings}
           onAdd={addFeeling}
+          onRemove={removeFeeiling}
           onClose={() => setShowPicker(false)}
         />
       )}
@@ -604,7 +605,7 @@ function Next30Step({
       </div>
 
       {showPicker && (
-        <FeelingsPicker selectedFeelings={form.next30.feelings} onAdd={addFeeling} onClose={() => setShowPicker(false)} />
+        <FeelingsPicker selectedFeelings={form.next30.feelings} onAdd={addFeeling} onRemove={removeFeeling} onClose={() => setShowPicker(false)} />
       )}
     </div>
   )
