@@ -2,7 +2,7 @@
   "app": {
     "title": "YPO Forum Update",
     "subtitle_forumView": "Forum View",
-    "subtitle_default": "Forum 11 · Monthly Revelation",
+    "subtitle_default": "Forum 11 Revelation",
     "step": "Step {{current}} of {{total}}"
   },
   "home": {

@@ -2,7 +2,7 @@
   "app": {
     "title": "YPO 论坛更新",
     "subtitle_forumView": "论坛视图",
-    "subtitle_default": "论坛 11 · 月度启示",
+    "subtitle_default": "论坛 11 启示",
     "step": "第 {{current}} 步，共 {{total}} 步"
   },
   "home": {
