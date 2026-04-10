@@ -66,6 +66,10 @@ function MeetingCard({
   const count = Object.values(memberStatuses).filter(Boolean).length
 
   return (
+    <div
+      className="card"
+      style={{ padding: '20px 22px', marginBottom: 14 }}
+    >
       {showDeleteModal && (
         <div style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)',
