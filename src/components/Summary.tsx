@@ -378,20 +378,28 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
             {t('forumView.back')}
           </button>
         ) : submitStatus === 'success' ? (
-          <div
-            style={{
-              flex: 1,
-              background: '#d1fae5',
-              border: '1.5px solid #059669',
-              borderRadius: 10,
-              padding: '14px 20px',
-              textAlign: 'center',
-              fontSize: 15,
-              fontWeight: 700,
-              color: '#065f46',
-            }}
-          >
-            {t('summary.submitted')}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div
+              style={{
+                background: '#d1fae5',
+                border: '1.5px solid #059669',
+                borderRadius: 10,
+                padding: '14px 20px',
+                textAlign: 'center',
+                fontSize: 15,
+                fontWeight: 700,
+                color: '#065f46',
+              }}
+            >
+              {t('summary.submitted')}
+            </div>
+            <button
+              className="btn-secondary"
+              style={{ justifyContent: 'center' }}
+              onClick={onRestart}
+            >
+              ← {t('summary.backToHome')}
+            </button>
           </div>
         ) : (
           <>
