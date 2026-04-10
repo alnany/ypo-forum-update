@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import i18n from './i18n'
 import { feelingsData } from './data/feelings'
@@ -517,12 +517,24 @@ function ExtraStep({ form, setForm, onNext, onBack }: { form: FormState; setForm
 
 // ── Main App ──────────────────────────────────────────────────────────────────
 
+// ── Draft helpers ─────────────────────────────────────────────────────────────
+
+const draftKey = (meetingId: string, memberName: string) =>
+  `forum11_draft_${meetingId}_${memberName}`
+
 export default function App() {
   const [screen, setScreen] = useState<AppScreen>('home')
   const [step, setStep] = useState<Step>('intro')
   const [activeMeeting, setActiveMeeting] = useState<Meeting | null>(null)
   const [form, setForm] = useState<FormState>(makeInitialState())
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+
+  // Auto-save draft to localStorage on every form/step change
+  useEffect(() => {
+    if (screen === 'update' && form.meetingId && form.memberName) {
+      localStorage.setItem(draftKey(form.meetingId, form.memberName), JSON.stringify({ form, step }))
+    }
+  }, [form, step, screen])
 
   const goHome = () => {
     setScreen('home')
@@ -533,10 +545,33 @@ export default function App() {
   }
 
   const startUpdate = (meeting: Meeting, member: MemberName) => {
+    const key = draftKey(meeting.id, member)
+    const saved = localStorage.getItem(key)
+    if (saved) {
+      try {
+        const { form: savedForm, step: savedStep } = JSON.parse(saved)
+        setForm({ ...savedForm, memberName: member, meetingId: meeting.id, date: meeting.displayDate, location: meeting.location })
+        setStep(savedStep || 'intro')
+      } catch {
+        setForm(makeInitialState(member, meeting))
+        setStep('intro')
+      }
+    } else {
+      setForm(makeInitialState(member, meeting))
+      setStep('intro')
+    }
     setActiveMeeting(meeting)
-    setForm(makeInitialState(member, meeting))
     setSubmitStatus('idle')
-    setStep('intro')
+    setScreen('update')
+    window.scrollTo(0, 0)
+  }
+
+  // Start editing an already-submitted update (loaded from server)
+  const startEdit = (meeting: Meeting, memberName: string, existingData: FormState) => {
+    setActiveMeeting(meeting)
+    setForm({ ...existingData, memberName, meetingId: meeting.id, date: meeting.displayDate, location: meeting.location })
+    setSubmitStatus('idle')
+    setStep('work')
     setScreen('update')
     window.scrollTo(0, 0)
   }
@@ -573,7 +608,13 @@ export default function App() {
       location: activeMeeting.location,
       data: form,
     })
-    setSubmitStatus(ok ? 'success' : 'error')
+    if (ok) {
+      // Clear the local draft — it's now persisted on the server
+      localStorage.removeItem(draftKey(form.meetingId, form.memberName))
+      setSubmitStatus('success')
+    } else {
+      setSubmitStatus('error')
+    }
   }
 
   return (
@@ -598,7 +639,7 @@ export default function App() {
         )}
 
         {screen === 'forum' && activeMeeting && (
-          <ForumView meeting={activeMeeting} onBack={goHome} />
+          <ForumView meeting={activeMeeting} onBack={goHome} onEdit={(member, data) => startEdit(activeMeeting, member, data)} />
         )}
 
         {screen === 'update' && (

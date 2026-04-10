@@ -17,9 +17,10 @@ const MEMBER_COLORS: Record<string, string> = {
 interface Props {
   meeting: Meeting
   onBack: () => void
+  onEdit?: (member: string, data: FormState) => void
 }
 
-export default function ForumView({ meeting, onBack }: Props) {
+export default function ForumView({ meeting, onBack, onEdit }: Props) {
   const { t } = useTranslation()
   const [memberData, setMemberData] = useState<ForumUpdateRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -35,7 +36,7 @@ export default function ForumView({ meeting, onBack }: Props) {
 
   const expandedRecord = expanded ? memberData.find((m) => m.member === expanded) : null
 
-  // Read full update
+  // Read / edit full update
   if (expandedRecord?.hasUpdate && expandedRecord.data) {
     return (
       <div>
@@ -63,7 +64,7 @@ export default function ForumView({ meeting, onBack }: Props) {
           >
             {t('forumView.back')}
           </button>
-          <div>
+          <div style={{ flex: 1 }}>
             <div style={{ color: 'white', fontSize: 15, fontWeight: 700 }}>
               {t('forumView.memberUpdate', { member: expanded })}
             </div>
@@ -71,6 +72,23 @@ export default function ForumView({ meeting, onBack }: Props) {
               {meeting.displayDate} · {meeting.location}
             </div>
           </div>
+          {onEdit && (
+            <button
+              onClick={() => onEdit(expanded!, expandedRecord.data as FormState)}
+              style={{
+                background: 'rgba(201,168,76,0.25)',
+                border: '1px solid rgba(201,168,76,0.6)',
+                color: 'var(--gold-light)',
+                borderRadius: 8,
+                padding: '6px 14px',
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              ✏️ {t('forumView.edit', 'Edit')}
+            </button>
+          )}
         </div>
         <Summary
           form={expandedRecord.data as FormState}
@@ -133,13 +151,11 @@ export default function ForumView({ meeting, onBack }: Props) {
             return (
               <div
                 key={member}
-                onClick={() => submitted && setExpanded(member)}
                 style={{
                   borderRadius: 12,
                   border: `2px solid ${submitted ? color + '55' : 'var(--border-light)'}`,
                   background: submitted ? `${color}08` : '#f9fafb',
                   padding: '18px 20px',
-                  cursor: submitted ? 'pointer' : 'default',
                   transition: 'all 0.15s',
                   opacity: submitted ? 1 : 0.55,
                 }}
@@ -173,11 +189,42 @@ export default function ForumView({ meeting, onBack }: Props) {
                 </div>
                 {submitted ? (
                   <>
-                    <div style={{ fontSize: 12, color: color, fontWeight: 600, marginBottom: 8 }}>
+                    <div style={{ fontSize: 12, color: color, fontWeight: 600, marginBottom: 10 }}>
                       {t('forumView.submitted')}{submittedDate ? ` · ${submittedDate}` : ''}
                     </div>
-                    <div style={{ fontSize: 12, color: color, fontWeight: 600 }}>
-                      {t('forumView.readUpdate')}
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      <button
+                        onClick={() => setExpanded(member)}
+                        style={{
+                          background: `${color}12`,
+                          border: `1px solid ${color}44`,
+                          color: color,
+                          borderRadius: 6,
+                          padding: '5px 10px',
+                          fontSize: 12,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {t('forumView.readUpdate')}
+                      </button>
+                      {onEdit && record?.data && (
+                        <button
+                          onClick={() => onEdit(member, record.data as FormState)}
+                          style={{
+                            background: 'transparent',
+                            border: `1px solid ${color}44`,
+                            color: color,
+                            borderRadius: 6,
+                            padding: '5px 10px',
+                            fontSize: 12,
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          ✏️ {t('forumView.edit', 'Edit')}
+                        </button>
+                      )}
                     </div>
                   </>
                 ) : (

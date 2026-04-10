@@ -40,6 +40,10 @@ function MeetingCard({
   const [deleteError, setDeleteError] = useState('')
   const [deleting, setDeleting] = useState(false)
 
+  // Check localStorage for in-progress drafts
+  const draftExists = (member: string) =>
+    !!localStorage.getItem(`forum11_draft_${meeting.id}_${member}`)
+
   const handleDelete = async () => {
     setDeleting(true)
     setDeleteError('')
@@ -262,6 +266,21 @@ function MeetingCard({
                       }}
                     >
                       ✓
+                    </span>
+                  )}
+                  {!alreadySubmitted && draftExists(member) && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: 3,
+                        right: 5,
+                        fontSize: 10,
+                        color: color,
+                        opacity: 0.8,
+                      }}
+                      title="Draft in progress"
+                    >
+                      ✏️
                     </span>
                   )}
                 </button>
