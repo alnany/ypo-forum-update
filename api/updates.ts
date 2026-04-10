@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { kv } from '@vercel/kv'
+import { getMeetingUpdates, getMemberUpdate, saveUpdate } from './_storage'
 
 const MEMBERS = ['Chris', 'Tony', 'Julian', 'Eric', 'Mike', 'Ethan']
 
@@ -15,19 +15,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!meetingId) return res.status(400).json({ error: 'meetingId required' })
 
       if (member) {
-        const data = await kv.get(`update:${member}:${meetingId}`)
-        if (!data) return res.status(404).json({ error: 'not found' })
-        return res.json(data)
+        const update = await getMemberUpdate(String(member), String(meetingId))
+        if (!update) return res.status(404).json({ error: 'not found' })
+        return res.json(update)
       } else {
-        const results = await Promise.all(
-          MEMBERS.map(async (m) => {
-            const data = await kv.get<object>(`update:${m}:${meetingId}`)
-            return data
-              ? { member: m, hasUpdate: true, ...data }
-              : { member: m, hasUpdate: false }
-          })
-        )
-        return res.json({ meetingId, members: results })
+        const result = await getMeetingUpdates(String(meetingId))
+        return res.json(result)
       }
     }
 
@@ -42,14 +35,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!body.member || !body.meetingId || !MEMBERS.includes(body.member)) {
         return res.status(400).json({ error: 'invalid member or missing meetingId' })
       }
-      const record = { ...body, submittedAt: new Date().toISOString() }
-      await kv.set(`update:${body.member}:${body.meetingId}`, record)
+      await saveUpdate(body)
       return res.status(201).json({ success: true })
     }
 
     return res.status(405).json({ error: 'method not allowed' })
   } catch (err) {
-    console.error('KV error:', err)
+    console.error('updates error:', err)
     return res.status(500).json({ error: 'storage error', detail: String(err) })
   }
 }
