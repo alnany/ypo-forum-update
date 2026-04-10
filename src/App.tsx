@@ -309,12 +309,27 @@ function SectionStep({
               Why do they matter to me? <span style={{ color: 'var(--gold)', fontSize: 11 }}>ASK WHY 3×</span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {([['Why #1', 'whyItMatters1', 'Because...'], ['Why #2', 'whyItMatters2', 'And deeper, because...'], ['Why #3', 'whyItMatters3', 'At the core, because...']] as [string, keyof SectionData, string][]).map(([label, key, placeholder]) => (
-                <div key={key} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                  <span style={{ background: 'var(--navy)', color: 'var(--gold)', borderRadius: 6, padding: '4px 8px', fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', marginTop: 12 }}>{label}</span>
-                  <textarea rows={2} placeholder={placeholder} value={data[key] as string} onChange={(e) => updateSection({ [key]: e.target.value } as Partial<SectionData>)} style={{ flex: 1 }} />
-                </div>
-              ))}
+              {([
+                { label: 'Why #1', key: 'whyItMatters1' as keyof SectionData, prev: null },
+                { label: 'Why #2', key: 'whyItMatters2' as keyof SectionData, prev: data.whyItMatters1 },
+                { label: 'Why #3', key: 'whyItMatters3' as keyof SectionData, prev: data.whyItMatters2 },
+              ]).map(({ label, key, prev }) => {
+                const trimmed = prev?.trim() ?? ''
+                const question = trimmed
+                  ? `Why does "${trimmed.length > 75 ? trimmed.slice(0, 75) + '…' : trimmed}" matter to you?`
+                  : null
+                return (
+                  <div key={key} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                    <span style={{ background: 'var(--navy)', color: 'var(--gold)', borderRadius: 6, padding: '4px 8px', fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', marginTop: question ? 24 : 12 }}>{label}</span>
+                    <div style={{ flex: 1 }}>
+                      {question && (
+                        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--navy)', marginBottom: 6, lineHeight: 1.4 }}>{question}</div>
+                      )}
+                      <textarea rows={2} placeholder="Because…" value={data[key] as string} onChange={(e) => updateSection({ [key]: e.target.value } as Partial<SectionData>)} />
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div>
