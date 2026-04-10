@@ -1,6 +1,6 @@
 import type { FormState } from '../App'
 
-export const MEMBERS = ['Chris', 'Tony', 'Julian', 'Eric', 'Mike', 'Ethan'] as const
+export const MEMBERS = ['Chris', 'Eric', 'Ethan', 'Julian', 'Mike', 'Tony'] as const
 export type MemberName = (typeof MEMBERS)[number]
 
 export interface Meeting {
