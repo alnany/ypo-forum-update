@@ -1,4 +1,12 @@
 {
-  "meetings": [],
+  "meetings": [
+    {
+      "id": "2026-06-15",
+      "date": "2026-06-15",
+      "displayDate": "June 15, 2026",
+      "location": "Bangkok, Thailand",
+      "createdAt": "2026-04-10T17:13:50.937Z"
+    }
+  ],
   "updates": {}
 }
