@@ -62,7 +62,7 @@ const makeInitialState = (memberName = '', meeting?: Meeting): FormState => ({
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const STEPS = ['intro', 'work', 'family', 'me', 'next30', 'extra', 'summary'] as const
+const STEPS = ['intro', 'work', 'me', 'family', 'next30', 'extra', 'summary'] as const
 type Step = (typeof STEPS)[number]
 type AppScreen = 'home' | 'update' | 'forum'
 
