@@ -47,7 +47,7 @@ async function writeData(data: AppData, sha: string): Promise<void> {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   if (req.method === 'OPTIONS') return res.status(200).end()
 
@@ -69,6 +69,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!data.updates) data.updates = {}
       await writeData(data, sha)
       return res.status(201).json(meeting)
+    }
+
+    if (req.method === 'DELETE') {
+      const { id, password } = req.body as { id: string; password: string }
+      if (!id) return res.status(400).json({ error: 'id required' })
+      if (password !== 'eiffeltower') return res.status(403).json({ error: 'incorrect password' })
+      const { data, sha } = await readData()
+      const exists = (data.meetings || []).some((m) => m.id === id)
+      if (!exists) return res.status(404).json({ error: 'meeting not found' })
+      // Remove meeting and all associated updates
+      data.meetings = (data.meetings || []).filter((m) => m.id !== id)
+      if (data.updates) {
+        for (const key of Object.keys(data.updates)) {
+          if (key.endsWith(`:${id}`)) delete data.updates[key]
+        }
+      }
+      await writeData(data, sha)
+      return res.json({ success: true })
     }
 
     return res.status(405).json({ error: 'method not allowed' })

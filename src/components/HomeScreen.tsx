@@ -4,6 +4,7 @@ import {
   getMeetings,
   createMeeting,
   getMeetingUpdates,
+  deleteMeeting,
 } from '../lib/api'
 import type { Meeting, MemberName, ForumUpdateRecord } from '../lib/api'
 
@@ -22,14 +23,34 @@ function MeetingCard({
   meeting,
   onMyUpdate,
   onView,
+  onDeleted,
 }: {
   meeting: Meeting
   onMyUpdate: (meeting: Meeting, member: MemberName) => void
   onView: (meeting: Meeting) => void
+  onDeleted: (id: string) => void
 }) {
   const [memberStatuses, setMemberStatuses] = useState<Record<string, boolean>>({})
   const [loadingStatus, setLoadingStatus] = useState(true)
   const [pickingMember, setPickingMember] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deletePassword, setDeletePassword] = useState('')
+  const [deleteError, setDeleteError] = useState('')
+  const [deleting, setDeleting] = useState(false)
+
+  const handleDelete = async () => {
+    setDeleting(true)
+    setDeleteError('')
+    const result = await deleteMeeting(meeting.id, deletePassword)
+    setDeleting(false)
+    if (result.ok) {
+      setShowDeleteModal(false)
+      onDeleted(meeting.id)
+    } else {
+      setDeleteError(result.error ?? 'Delete failed.')
+      setDeletePassword('')
+    }
+  }
 
   useEffect(() => {
     getMeetingUpdates(meeting.id).then((data) => {
@@ -45,10 +66,56 @@ function MeetingCard({
   const count = Object.values(memberStatuses).filter(Boolean).length
 
   return (
-    <div
-      className="card"
-      style={{ padding: '20px 22px', marginBottom: 14 }}
-    >
+      {showDeleteModal && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 1000, padding: '0 24px',
+        }}>
+          <div className="card" style={{ padding: '24px', width: '100%', maxWidth: 360 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--navy)', marginBottom: 6 }}>
+              🗑️ Delete Meeting
+            </h3>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
+              Enter the admin password to delete <strong>{meeting.displayDate}</strong> and all its updates.
+            </p>
+            <input
+              type="password"
+              placeholder="Password"
+              value={deletePassword}
+              autoFocus
+              onChange={(e) => setDeletePassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleDelete()}
+              style={{ width: '100%', marginBottom: 10 }}
+            />
+            {deleteError && (
+              <div style={{ color: '#b91c1c', fontSize: 13, marginBottom: 10 }}>{deleteError}</div>
+            )}
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                className="btn-secondary"
+                style={{ flex: 1, justifyContent: 'center' }}
+                onClick={() => { setShowDeleteModal(false); setDeletePassword(''); setDeleteError('') }}
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleting || !deletePassword}
+                style={{
+                  flex: 1, padding: '11px 14px', background: deleting ? '#fca5a5' : '#dc2626',
+                  border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 700,
+                  color: 'white', cursor: deleting ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {deleting ? 'Deleting…' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Meeting header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
         <div>
@@ -60,22 +127,38 @@ function MeetingCard({
             <span>{meeting.location}</span>
           </div>
         </div>
-        {!loadingStatus && (
-          <div
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {!loadingStatus && (
+            <div
+              style={{
+                background: count === MEMBERS.length ? '#d1fae5' : 'var(--gold-pale)',
+                border: `1px solid ${count === MEMBERS.length ? '#6ee7b7' : '#f3d87a'}`,
+                borderRadius: 20,
+                padding: '3px 10px',
+                fontSize: 12,
+                fontWeight: 700,
+                color: count === MEMBERS.length ? '#065f46' : '#78500a',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {count}/{MEMBERS.length} submitted
+            </div>
+          )}
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            title="Delete meeting"
             style={{
-              background: count === MEMBERS.length ? '#d1fae5' : 'var(--gold-pale)',
-              border: `1px solid ${count === MEMBERS.length ? '#6ee7b7' : '#f3d87a'}`,
-              borderRadius: 20,
-              padding: '3px 10px',
-              fontSize: 12,
-              fontWeight: 700,
-              color: count === MEMBERS.length ? '#065f46' : '#78500a',
-              whiteSpace: 'nowrap',
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: '#94a3b8', fontSize: 16, padding: '2px 4px',
+              lineHeight: 1, borderRadius: 4,
+              transition: 'color 0.15s',
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#dc2626')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#94a3b8')}
           >
-            {count}/{MEMBERS.length} submitted
-          </div>
-        )}
+            🗑️
+          </button>
+        </div>
       </div>
 
       {/* Member status dots */}
@@ -331,6 +414,10 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
     setShowNewForm(false)
   }
 
+  const handleMeetingDeleted = (id: string) => {
+    setMeetings((prev) => prev.filter((m) => m.id !== id))
+  }
+
   return (
     <div className="animate-in" style={{ maxWidth: 560, margin: '0 auto', padding: '28px 24px 60px' }}>
       {/* Title */}
@@ -381,6 +468,7 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
             meeting={meeting}
             onMyUpdate={onStartUpdate}
             onView={onViewForum}
+            onDeleted={handleMeetingDeleted}
           />
         ))
       )}

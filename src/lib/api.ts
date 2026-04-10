@@ -52,7 +52,20 @@ export async function createMeeting(date: string, location: string): Promise<Mee
   }
 }
 
-// ── Updates ─────────────────────────────────────────────────────────────────
+export async function deleteMeeting(id: string, password: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const resp = await fetch('/api/meetings', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, password }),
+    })
+    if (resp.status === 403) return { ok: false, error: 'Incorrect password.' }
+    if (!resp.ok) return { ok: false, error: 'Failed to delete meeting.' }
+    return { ok: true }
+  } catch {
+    return { ok: false, error: 'Network error.' }
+  }
+}
 
 export async function getMeetingUpdates(meetingId: string): Promise<MeetingUpdatesResponse | null> {
   try {
