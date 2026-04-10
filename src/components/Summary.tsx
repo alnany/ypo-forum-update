@@ -51,7 +51,7 @@ function SectionBlock({
   color: string
   data: SectionData
 }) {
-  const hasContent = data.feelings.length > 0 || data.events || data.whatItSays
+  const hasContent = data.feelings.length > 0 || Object.values(data.feelingEvents ?? {}).some(Boolean) || data.whatItSays
 
   if (!hasContent) return null
 
@@ -93,13 +93,29 @@ function SectionBlock({
           </div>
         )}
 
-        {/* Events */}
-        {data.events && (
+        {/* Per-feeling Events */}
+        {data.feelings.length > 0 && Object.values(data.feelingEvents ?? {}).some(Boolean) && (
           <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-              Events (What Got Triggered)
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+              What Triggered Each Feeling
             </div>
-            <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{data.events}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {data.feelings.filter(f => data.feelingEvents?.[f]).map((f) => {
+                const core = coreForFeeling(f)
+                return (
+                  <div key={f} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                    <span style={{
+                      background: core?.bgColor || '#f1f5f9',
+                      border: `1px solid ${core?.color || '#cbd5e1'}55`,
+                      color: core?.color || '#334155',
+                      borderRadius: 20, padding: '3px 10px', fontSize: 12, fontWeight: 700,
+                      whiteSpace: 'nowrap', flexShrink: 0, marginTop: 2,
+                    }}>{f}</span>
+                    <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, flex: 1, whiteSpace: 'pre-wrap', margin: 0 }}>{data.feelingEvents[f]}</p>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         )}
 

@@ -11,7 +11,7 @@ import type { Meeting, MemberName } from './lib/api'
 
 export interface SectionData {
   feelings: string[]
-  events: string
+  feelingEvents: Record<string, string>   // feeling → event that triggered it
   whatItSays: string
   whyItMatters1: string
   whyItMatters2: string
@@ -38,7 +38,7 @@ export interface FormState {
 
 const emptySection = (): SectionData => ({
   feelings: [],
-  events: '',
+  feelingEvents: {},
   whatItSays: '',
   whyItMatters1: '',
   whyItMatters2: '',
@@ -257,7 +257,12 @@ function SectionStep({
               return (
                 <span key={f} className="feeling-tag" style={{ background: core?.bgColor || '#f1f5f9', borderColor: core?.color || '#cbd5e1', color: core?.color || '#334155' }}>
                   {f}
-                  <button onClick={() => updateSection({ feelings: data.feelings.filter((x) => x !== f) })}>×</button>
+                  <button onClick={() => {
+                    const updated = data.feelings.filter((x) => x !== f)
+                    const updatedEvents = { ...data.feelingEvents }
+                    delete updatedEvents[f]
+                    updateSection({ feelings: updated, feelingEvents: updatedEvents })
+                  }}>×</button>
                 </span>
               )
             })}
@@ -265,12 +270,34 @@ function SectionStep({
         )}
       </div>
 
-      {/* Events */}
-      <div className="card" style={{ padding: '22px 24px', marginBottom: 16 }}>
-        <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy)', marginBottom: 4 }}>Events</h3>
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 12 }}>What got triggered? Use 1 sentence to describe each event.</p>
-        <textarea rows={4} placeholder="e.g. A major client pulled out of our deal last week..." value={data.events} onChange={(e) => updateSection({ events: e.target.value })} />
-      </div>
+      {/* Per-feeling events */}
+      {data.feelings.length > 0 && (
+        <div className="card" style={{ padding: '22px 24px', marginBottom: 16 }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy)', marginBottom: 4 }}>What Triggered Each Feeling?</h3>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>For each feeling, describe the event that triggered it in 1–2 sentences.</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {data.feelings.map((f) => {
+              const core = coreForFeeling(f)
+              return (
+                <div key={f} style={{ borderRadius: 8, border: `1.5px solid ${core?.color || '#cbd5e1'}44`, overflow: 'hidden' }}>
+                  <div style={{ background: core?.bgColor || '#f1f5f9', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ background: core?.color || '#94a3b8', color: 'white', borderRadius: 20, padding: '3px 12px', fontSize: 13, fontWeight: 700 }}>{f}</span>
+                  </div>
+                  <div style={{ padding: '10px 14px' }}>
+                    <textarea
+                      rows={2}
+                      placeholder={`What event made you feel ${f.toLowerCase()}?`}
+                      value={data.feelingEvents[f] || ''}
+                      onChange={(e) => updateSection({ feelingEvents: { ...data.feelingEvents, [f]: e.target.value } })}
+                      style={{ marginBottom: 0 }}
+                    />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {/* 5% Significance */}
       <div className="card" style={{ padding: '22px 24px', marginBottom: 24 }}>
@@ -311,8 +338,12 @@ function SectionStep({
       {showPicker && (
         <FeelingsPicker
           selectedFeelings={data.feelings}
-          onAdd={(f) => { if (!data.feelings.includes(f)) updateSection({ feelings: [...data.feelings, f] }) }}
-          onRemove={(f) => updateSection({ feelings: data.feelings.filter((x) => x !== f) })}
+          onAdd={(f) => { if (!data.feelings.includes(f)) updateSection({ feelings: [...data.feelings, f], feelingEvents: { ...data.feelingEvents, [f]: '' } }) }}
+          onRemove={(f) => {
+            const updatedEvents = { ...data.feelingEvents }
+            delete updatedEvents[f]
+            updateSection({ feelings: data.feelings.filter((x) => x !== f), feelingEvents: updatedEvents })
+          }}
           onClose={() => setShowPicker(false)}
         />
       )}
