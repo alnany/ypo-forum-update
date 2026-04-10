@@ -5,6 +5,9 @@ interface Props {
   form: FormState
   onBack: () => void
   onRestart: () => void
+  readOnly?: boolean
+  onSubmit?: () => void
+  submitStatus?: 'idle' | 'submitting' | 'success' | 'error'
 }
 
 const coreForFeeling = (feeling: string) => {
@@ -188,7 +191,7 @@ function SectionBlock({
   )
 }
 
-export default function Summary({ form, onBack, onRestart }: Props) {
+export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, submitStatus = 'idle' }: Props) {
   const handlePrint = () => window.print()
 
   return (
@@ -357,30 +360,64 @@ export default function Summary({ form, onBack, onRestart }: Props) {
 
       {/* Action buttons */}
       <div className="no-print" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <button className="btn-secondary" onClick={onBack}>
-          ← Edit
-        </button>
-        <button
-          className="btn-primary"
-          style={{ flex: 1, justifyContent: 'center' }}
-          onClick={handlePrint}
-        >
-          🖨️ Print / Save PDF
-        </button>
-        <button
-          onClick={onRestart}
-          style={{
-            background: 'none',
-            border: '1.5px solid var(--border)',
-            borderRadius: 8,
-            padding: '12px 20px',
-            fontSize: 14,
-            color: 'var(--text-muted)',
-            cursor: 'pointer',
-          }}
-        >
-          Start Over
-        </button>
+        {readOnly ? (
+          <button className="btn-secondary" style={{ flex: 1, justifyContent: 'center' }} onClick={onBack}>
+            ← Back to Forum
+          </button>
+        ) : submitStatus === 'success' ? (
+          <div
+            style={{
+              flex: 1,
+              background: '#d1fae5',
+              border: '1.5px solid #059669',
+              borderRadius: 10,
+              padding: '14px 20px',
+              textAlign: 'center',
+              fontSize: 15,
+              fontWeight: 700,
+              color: '#065f46',
+            }}
+          >
+            ✓ Submitted to Forum 11
+          </div>
+        ) : (
+          <>
+            <button className="btn-secondary" onClick={onBack}>
+              ← Edit
+            </button>
+            {onSubmit && (
+              <button
+                className="btn-primary"
+                style={{ flex: 1, justifyContent: 'center' }}
+                onClick={onSubmit}
+                disabled={submitStatus === 'submitting'}
+              >
+                {submitStatus === 'submitting' ? 'Submitting…' : submitStatus === 'error' ? '⚠ Retry Submit' : '📤 Submit to Forum'}
+              </button>
+            )}
+            <button
+              className="btn-primary"
+              style={{ background: '#334155', justifyContent: 'center' }}
+              onClick={handlePrint}
+            >
+              🖨️
+            </button>
+            <button
+              onClick={onRestart}
+              style={{
+                background: 'none',
+                border: '1.5px solid var(--border)',
+                borderRadius: 8,
+                padding: '12px 14px',
+                fontSize: 14,
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+              }}
+            >
+              ↺
+            </button>
+          </>
+        )}
       </div>
     </div>
   )
