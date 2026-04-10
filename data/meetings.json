@@ -8,5 +8,58 @@
       "createdAt": "2026-04-10T17:13:50.937Z"
     }
   ],
-  "updates": {}
+  "updates": {
+    "Chris:2026-04-09": {
+      "member": "Chris",
+      "meetingId": "2026-04-09",
+      "displayDate": "April 9, 2026",
+      "location": "asdf",
+      "data": {
+        "memberName": "Chris",
+        "forumName": "Forum 11",
+        "meetingId": "2026-04-09",
+        "date": "April 9, 2026",
+        "location": "asdf",
+        "work": {
+          "feelings": [
+            "Trusting",
+            "Amazed",
+            "Eager"
+          ],
+          "feelingEvents": {
+            "Trusting": "Has a good team",
+            "Amazed": "they work hard",
+            "Eager": "see resrults"
+          },
+          "whyItMatters1": "I need to make money so I can feed my family",
+          "whyItMatters2": "so they can have food",
+          "whyItMatters3": "so they dont go hungry",
+          "whatIRealize": ""
+        },
+        "family": {
+          "feelings": [],
+          "feelingEvents": {},
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "me": {
+          "feelings": [],
+          "feelingEvents": {},
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "next30": {
+          "feelings": [],
+          "outlook": ""
+        },
+        "groupLearning": "",
+        "explore": ""
+      },
+      "submittedAt": "2026-04-10T17:15:34.104Z"
+    }
+  }
 }
