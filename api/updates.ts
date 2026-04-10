@@ -4,7 +4,6 @@ import { kv } from '@vercel/kv'
 const MEMBERS = ['Chris', 'Tony', 'Julian', 'Eric', 'Mike', 'Ethan']
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS (same-origin in production, needed for local dev)
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -12,41 +11,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (req.method === 'GET') {
-      const { month, member } = req.query
-      if (!month) return res.status(400).json({ error: 'month parameter required (e.g. 2026-04)' })
-      const yearMonth = month as string
+      const { meetingId, member } = req.query
+      if (!meetingId) return res.status(400).json({ error: 'meetingId required' })
 
       if (member) {
-        // Fetch a single member's update
-        const data = await kv.get(`update:${member}:${yearMonth}`)
+        const data = await kv.get(`update:${member}:${meetingId}`)
         if (!data) return res.status(404).json({ error: 'not found' })
         return res.json(data)
       } else {
-        // Fetch all updates for the month
         const results = await Promise.all(
           MEMBERS.map(async (m) => {
-            const data = await kv.get<object>(`update:${m}:${yearMonth}`)
-            return data ? { member: m, hasUpdate: true, ...data } : { member: m, hasUpdate: false }
+            const data = await kv.get<object>(`update:${m}:${meetingId}`)
+            return data
+              ? { member: m, hasUpdate: true, ...data }
+              : { member: m, hasUpdate: false }
           })
         )
-        return res.json({ yearMonth, members: results })
+        return res.json({ meetingId, members: results })
       }
     }
 
     if (req.method === 'POST') {
       const body = req.body as {
         member: string
-        yearMonth: string
-        month: string
+        meetingId: string
+        displayDate: string
+        location: string
         data: unknown
       }
-      if (!body.member || !body.yearMonth || !MEMBERS.includes(body.member)) {
-        return res.status(400).json({ error: 'invalid member or missing yearMonth' })
+      if (!body.member || !body.meetingId || !MEMBERS.includes(body.member)) {
+        return res.status(400).json({ error: 'invalid member or missing meetingId' })
       }
       const record = { ...body, submittedAt: new Date().toISOString() }
-      await kv.set(`update:${body.member}:${body.yearMonth}`, record)
-      // Track months for archive
-      await kv.sadd('months', body.yearMonth)
+      await kv.set(`update:${body.member}:${body.meetingId}`, record)
       return res.status(201).json({ success: true })
     }
 

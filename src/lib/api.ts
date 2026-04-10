@@ -3,49 +3,48 @@ import type { FormState } from '../App'
 export const MEMBERS = ['Chris', 'Tony', 'Julian', 'Eric', 'Mike', 'Ethan'] as const
 export type MemberName = (typeof MEMBERS)[number]
 
+export interface Meeting {
+  id: string          // "2026-04-10"
+  date: string        // "2026-04-10"
+  displayDate: string // "April 10, 2026"
+  location: string
+  createdAt: string
+}
+
 export interface ForumUpdateRecord {
   member: string
-  yearMonth: string
-  month: string
+  meetingId: string
+  displayDate: string
+  location: string
   submittedAt: string
   data: FormState
   hasUpdate: boolean
 }
 
-export interface MonthResponse {
-  yearMonth: string
+export interface MeetingUpdatesResponse {
+  meetingId: string
   members: ForumUpdateRecord[]
 }
 
-export function toYearMonth(dateStr: string): string {
-  const months = [
-    'January','February','March','April','May','June',
-    'July','August','September','October','November','December'
-  ]
-  const parts = dateStr.trim().split(' ')
-  if (parts.length !== 2) return new Date().toISOString().slice(0, 7)
-  const [month, year] = parts
-  const idx = months.indexOf(month)
-  if (idx === -1) return new Date().toISOString().slice(0, 7)
-  return `${year}-${String(idx + 1).padStart(2, '0')}`
-}
+// ── Meetings ────────────────────────────────────────────────────────────────
 
-export function fromYearMonth(ym: string): string {
-  const months = [
-    'January','February','March','April','May','June',
-    'July','August','September','October','November','December'
-  ]
-  const [year, month] = ym.split('-')
-  return `${months[parseInt(month) - 1]} ${year}`
-}
-
-export function currentYearMonth(): string {
-  return new Date().toISOString().slice(0, 7)
-}
-
-export async function getMonthUpdates(yearMonth: string): Promise<MonthResponse | null> {
+export async function getMeetings(): Promise<Meeting[]> {
   try {
-    const resp = await fetch(`/api/updates?month=${yearMonth}`)
+    const resp = await fetch('/api/meetings')
+    if (!resp.ok) return []
+    return resp.json()
+  } catch {
+    return []
+  }
+}
+
+export async function createMeeting(date: string, location: string): Promise<Meeting | null> {
+  try {
+    const resp = await fetch('/api/meetings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, location }),
+    })
     if (!resp.ok) return null
     return resp.json()
   } catch {
@@ -53,9 +52,23 @@ export async function getMonthUpdates(yearMonth: string): Promise<MonthResponse 
   }
 }
 
-export async function getMemberUpdate(member: string, yearMonth: string): Promise<ForumUpdateRecord | null> {
+// ── Updates ─────────────────────────────────────────────────────────────────
+
+export async function getMeetingUpdates(meetingId: string): Promise<MeetingUpdatesResponse | null> {
   try {
-    const resp = await fetch(`/api/updates?month=${yearMonth}&member=${encodeURIComponent(member)}`)
+    const resp = await fetch(`/api/updates?meetingId=${encodeURIComponent(meetingId)}`)
+    if (!resp.ok) return null
+    return resp.json()
+  } catch {
+    return null
+  }
+}
+
+export async function getMemberUpdate(member: string, meetingId: string): Promise<ForumUpdateRecord | null> {
+  try {
+    const resp = await fetch(
+      `/api/updates?meetingId=${encodeURIComponent(meetingId)}&member=${encodeURIComponent(member)}`
+    )
     if (!resp.ok) return null
     return resp.json()
   } catch {
@@ -65,8 +78,9 @@ export async function getMemberUpdate(member: string, yearMonth: string): Promis
 
 export async function saveUpdate(payload: {
   member: string
-  yearMonth: string
-  month: string
+  meetingId: string
+  displayDate: string
+  location: string
   data: FormState
 }): Promise<boolean> {
   try {

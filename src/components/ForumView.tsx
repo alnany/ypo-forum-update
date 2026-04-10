@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { MEMBERS, getMonthUpdates, fromYearMonth } from '../lib/api'
-import type { ForumUpdateRecord } from '../lib/api'
+import { MEMBERS, getMeetingUpdates } from '../lib/api'
+import type { Meeting, ForumUpdateRecord } from '../lib/api'
 import Summary from './Summary'
 import type { FormState } from '../App'
 
@@ -13,40 +13,27 @@ const MEMBER_COLORS: Record<string, string> = {
   Ethan: '#1e40af',
 }
 
-function prevMonth(ym: string): string {
-  const [y, m] = ym.split('-').map(Number)
-  const d = new Date(y, m - 2, 1)
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-}
-
-function nextMonth(ym: string): string {
-  const [y, m] = ym.split('-').map(Number)
-  const d = new Date(y, m, 1)
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-}
-
 interface Props {
-  initialYearMonth: string
+  meeting: Meeting
   onBack: () => void
 }
 
-export default function ForumView({ initialYearMonth, onBack }: Props) {
-  const [yearMonth, setYearMonth] = useState(initialYearMonth)
+export default function ForumView({ meeting, onBack }: Props) {
   const [memberData, setMemberData] = useState<ForumUpdateRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState<string | null>(null)
 
   useEffect(() => {
     setLoading(true)
-    setExpanded(null)
-    getMonthUpdates(yearMonth).then((data) => {
+    getMeetingUpdates(meeting.id).then((data) => {
       if (data) setMemberData(data.members)
       setLoading(false)
     })
-  }, [yearMonth])
+  }, [meeting.id])
 
   const expandedRecord = expanded ? memberData.find((m) => m.member === expanded) : null
 
+  // Read full update
   if (expandedRecord?.hasUpdate && expandedRecord.data) {
     return (
       <div>
@@ -74,9 +61,14 @@ export default function ForumView({ initialYearMonth, onBack }: Props) {
           >
             ← Back
           </button>
-          <span style={{ color: 'white', fontSize: 15, fontWeight: 700 }}>
-            {expanded}'s Update — {fromYearMonth(yearMonth)}
-          </span>
+          <div>
+            <div style={{ color: 'white', fontSize: 15, fontWeight: 700 }}>
+              {expanded}'s Update
+            </div>
+            <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
+              {meeting.displayDate} · {meeting.location}
+            </div>
+          </div>
         </div>
         <Summary
           form={expandedRecord.data as FormState}
@@ -91,7 +83,7 @@ export default function ForumView({ initialYearMonth, onBack }: Props) {
   return (
     <div className="animate-in" style={{ maxWidth: 600, margin: '0 auto', padding: '24px 24px 60px' }}>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+      <div style={{ marginBottom: 22 }}>
         <button
           onClick={onBack}
           style={{
@@ -103,49 +95,24 @@ export default function ForumView({ initialYearMonth, onBack }: Props) {
             cursor: 'pointer',
             color: 'var(--navy)',
             fontWeight: 600,
+            marginBottom: 14,
           }}
         >
-          ← Home
+          ← All Meetings
         </button>
-        <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--navy)', flex: 1 }}>
-          Forum Updates
+        <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--navy)', marginBottom: 4 }}>
+          {meeting.displayDate}
         </h2>
-      </div>
-
-      {/* Month navigation */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'white',
-          borderRadius: 10,
-          border: '1px solid var(--border-light)',
-          padding: '10px 16px',
-          marginBottom: 22,
-        }}
-      >
-        <button
-          onClick={() => setYearMonth(prevMonth(yearMonth))}
-          style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: 'var(--navy)', padding: '4px 8px' }}
-        >
-          ‹
-        </button>
-        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--navy)' }}>
-          {fromYearMonth(yearMonth)}
-        </span>
-        <button
-          onClick={() => setYearMonth(nextMonth(yearMonth))}
-          style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: 'var(--navy)', padding: '4px 8px' }}
-        >
-          ›
-        </button>
+        <div style={{ fontSize: 14, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 5 }}>
+          <span>📍</span>
+          <span>{meeting.location}</span>
+        </div>
       </div>
 
       {/* Member grid */}
       {loading ? (
         <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)', fontSize: 14 }}>
-          Loading...
+          Loading updates…
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
@@ -153,9 +120,13 @@ export default function ForumView({ initialYearMonth, onBack }: Props) {
             const record = memberData.find((m) => m.member === member)
             const submitted = record?.hasUpdate ?? false
             const color = MEMBER_COLORS[member]
-            const submittedDate = submitted && record?.submittedAt
-              ? new Date(record.submittedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-              : null
+            const submittedDate =
+              submitted && record?.submittedAt
+                ? new Date(record.submittedAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })
+                : null
 
             return (
               <div
@@ -168,10 +139,9 @@ export default function ForumView({ initialYearMonth, onBack }: Props) {
                   padding: '18px 20px',
                   cursor: submitted ? 'pointer' : 'default',
                   transition: 'all 0.15s',
-                  opacity: submitted ? 1 : 0.6,
+                  opacity: submitted ? 1 : 0.55,
                 }}
               >
-                {/* Avatar */}
                 <div
                   style={{
                     width: 44,
@@ -189,32 +159,27 @@ export default function ForumView({ initialYearMonth, onBack }: Props) {
                 >
                   {member[0]}
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: submitted ? color : 'var(--text-muted)', marginBottom: 4 }}>
+                <div
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: submitted ? color : 'var(--text-muted)',
+                    marginBottom: 4,
+                  }}
+                >
                   {member}
                 </div>
                 {submitted ? (
-                  <div style={{ fontSize: 12, color: color, fontWeight: 600 }}>
-                    ✓ Submitted {submittedDate ? `· ${submittedDate}` : ''}
-                  </div>
+                  <>
+                    <div style={{ fontSize: 12, color: color, fontWeight: 600, marginBottom: 8 }}>
+                      ✓ Submitted {submittedDate ? `· ${submittedDate}` : ''}
+                    </div>
+                    <div style={{ fontSize: 12, color: color, fontWeight: 600 }}>
+                      Read update →
+                    </div>
+                  </>
                 ) : (
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                    Not yet submitted
-                  </div>
-                )}
-                {submitted && (
-                  <div
-                    style={{
-                      marginTop: 10,
-                      fontSize: 12,
-                      color: color,
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 4,
-                    }}
-                  >
-                    Read update →
-                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Not yet submitted</div>
                 )}
               </div>
             )
