@@ -60,6 +60,56 @@
         "explore": ""
       },
       "submittedAt": "2026-04-10T17:15:34.104Z"
+    },
+    "Chris:2026-03-27": {
+      "member": "Chris",
+      "meetingId": "2026-03-27",
+      "displayDate": "March 27, 2026",
+      "location": "Macau",
+      "data": {
+        "memberName": "Chris",
+        "forumName": "Forum 11",
+        "meetingId": "2026-03-27",
+        "date": "March 27, 2026",
+        "location": "Macau",
+        "work": {
+          "feelings": [
+            "Optimistic",
+            "Worried"
+          ],
+          "feelingEvents": {
+            "Optimistic": "The Pakistan project is going well, Bonbon model is working, and cashflow has improved.",
+            "Worried": "Bonbon was rejected from the App Store due to date booking feature, without an iOS marketing can be more difficult."
+          },
+          "whyItMatters1": "I need to start turning things around and make money.",
+          "whyItMatters2": "Because I am unwell when business is not going well.",
+          "whyItMatters3": "I want to be happier and more confident.",
+          "whatIRealize": "My well-being is dependent on how well business is doing."
+        },
+        "family": {
+          "feelings": [],
+          "feelingEvents": {},
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "me": {
+          "feelings": [],
+          "feelingEvents": {},
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "next30": {
+          "feelings": [],
+          "outlook": ""
+        },
+        "groupLearning": "",
+        "explore": ""
+      },
+      "submittedAt": "2026-04-10T17:37:14.111Z"
     }
   }
 }
