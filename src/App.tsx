@@ -12,7 +12,6 @@ import type { Meeting, MemberName } from './lib/api'
 export interface SectionData {
   feelings: string[]
   feelingEvents: Record<string, string>   // feeling → event that triggered it
-  whatItSays: string
   whyItMatters1: string
   whyItMatters2: string
   whyItMatters3: string
@@ -39,7 +38,6 @@ export interface FormState {
 const emptySection = (): SectionData => ({
   feelings: [],
   feelingEvents: {},
-  whatItSays: '',
   whyItMatters1: '',
   whyItMatters2: '',
   whyItMatters3: '',
@@ -303,13 +301,9 @@ function SectionStep({
       <div className="card" style={{ padding: '22px 24px', marginBottom: 24 }}>
         <div style={{ background: 'linear-gradient(135deg, var(--navy) 0%, var(--navy-muted) 100%)', borderRadius: 8, padding: '12px 16px', marginBottom: 20 }}>
           <h3 style={{ fontSize: 15, fontWeight: 800, color: 'white', marginBottom: 2 }}>5% Significance</h3>
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>What do these incidents say about what truly matters to you?</p>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>Dig into why these feelings and events matter to you.</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div>
-            <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 8 }}>What do these incidents say about me?</label>
-            <textarea rows={3} placeholder="Reflect on what these events reveal about your values, patterns, or identity..." value={data.whatItSays} onChange={(e) => updateSection({ whatItSays: e.target.value })} />
-          </div>
           <div style={{ background: '#f8fafc', borderRadius: 8, padding: '16px', border: '1px solid var(--border-light)' }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 12 }}>
               Why do they matter to me? <span style={{ color: 'var(--gold)', fontSize: 11 }}>ASK WHY 3×</span>

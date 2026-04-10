@@ -51,7 +51,7 @@ function SectionBlock({
   color: string
   data: SectionData
 }) {
-  const hasContent = data.feelings.length > 0 || Object.values(data.feelingEvents ?? {}).some(Boolean) || data.whatItSays
+  const hasContent = data.feelings.length > 0 || Object.values(data.feelingEvents ?? {}).some(Boolean) || data.whyItMatters1
 
   if (!hasContent) return null
 
@@ -120,7 +120,7 @@ function SectionBlock({
         )}
 
         {/* 5% Significance */}
-        {(data.whatItSays || data.whyItMatters1 || data.whyItMatters2 || data.whyItMatters3 || data.whatIRealize) && (
+        {(data.whyItMatters1 || data.whyItMatters2 || data.whyItMatters3 || data.whatIRealize) && (
           <div
             style={{
               background: '#f8fafc',
@@ -155,13 +155,6 @@ function SectionBlock({
               </span>
               Significance
             </div>
-
-            {data.whatItSays && (
-              <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 4 }}>What these incidents say about me:</div>
-                <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{data.whatItSays}</p>
-              </div>
-            )}
 
             {(data.whyItMatters1 || data.whyItMatters2 || data.whyItMatters3) && (
               <div style={{ marginBottom: 10 }}>
