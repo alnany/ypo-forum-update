@@ -1,8 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN ?? ''
-const GIST_ID = process.env.GIST_ID ?? ''
-const GITHUB_HEADERS = {
+const OWNER = 'alnany'
+const REPO = 'ypo-forum-update'
+const FILE = 'data/meetings.json'
+const GH = {
   Authorization: `Bearer ${GITHUB_TOKEN}`,
   Accept: 'application/vnd.github+json',
   'Content-Type': 'application/json',
@@ -10,26 +12,29 @@ const GITHUB_HEADERS = {
 }
 const MEMBERS = ['Chris', 'Tony', 'Julian', 'Eric', 'Mike', 'Ethan']
 
-async function readGist() {
-  const resp = await fetch(`https://api.github.com/gists/${GIST_ID}`, { headers: GITHUB_HEADERS })
-  if (!resp.ok) throw new Error(`Gist read failed: ${resp.status} ${await resp.text()}`)
-  const gist = await resp.json() as { files: Record<string, { content?: string; raw_url?: string }> }
-  const file = gist.files['meetings.json']
-  if (!file) return { meetings: [], updates: {} }
-  let content = file.content
-  if (!content && file.raw_url) {
-    content = await fetch(file.raw_url).then(r => r.text())
-  }
-  try { return JSON.parse(content ?? '{}') } catch { return { meetings: [], updates: {} } }
+interface AppData {
+  meetings: unknown[]
+  updates: Record<string, unknown>
 }
 
-async function writeGist(data: object) {
-  const resp = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-    method: 'PATCH',
-    headers: GITHUB_HEADERS,
-    body: JSON.stringify({ files: { 'meetings.json': { content: JSON.stringify(data, null, 2) } } }),
+async function readData(): Promise<{ data: AppData; sha: string }> {
+  const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`, { headers: GH })
+  if (resp.status === 404) return { data: { meetings: [], updates: {} }, sha: '' }
+  if (!resp.ok) throw new Error(`Read failed: ${resp.status} ${await resp.text()}`)
+  const file = await resp.json() as { content: string; sha: string }
+  const text = Buffer.from(file.content, 'base64').toString('utf-8')
+  try { return { data: JSON.parse(text), sha: file.sha } }
+  catch { return { data: { meetings: [], updates: {} }, sha: file.sha } }
+}
+
+async function writeData(data: AppData, sha: string): Promise<void> {
+  const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
+  const body: Record<string, string> = { message: 'chore: update meetings data', content, branch: 'main' }
+  if (sha) body.sha = sha
+  const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`, {
+    method: 'PUT', headers: GH, body: JSON.stringify(body),
   })
-  if (!resp.ok) throw new Error(`Gist write failed: ${resp.status} ${await resp.text()}`)
+  if (!resp.ok) throw new Error(`Write failed: ${resp.status} ${await resp.text()}`)
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -43,7 +48,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (req.method === 'GET') {
       if (!meetingId) return res.status(400).json({ error: 'meetingId required' })
-      const data = await readGist()
+      const { data } = await readData()
       const updates = data.updates ?? {}
 
       if (member) {
@@ -55,7 +60,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           meetingId,
           members: MEMBERS.map(m => {
             const u = updates[`${m}:${meetingId}`]
-            return u ? { member: m, hasUpdate: true, ...u } : { member: m, hasUpdate: false }
+            return u ? { member: m, hasUpdate: true, ...(u as object) } : { member: m, hasUpdate: false }
           }),
         })
       }
@@ -66,16 +71,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!body.member || !body.meetingId || !MEMBERS.includes(body.member)) {
         return res.status(400).json({ error: 'invalid member or missing meetingId' })
       }
-      const gistData = await readGist()
-      if (!gistData.updates) gistData.updates = {}
-      gistData.updates[`${body.member}:${body.meetingId}`] = { ...body, submittedAt: new Date().toISOString() }
-      await writeGist(gistData)
+      const { data, sha } = await readData()
+      if (!data.updates) data.updates = {}
+      data.updates[`${body.member}:${body.meetingId}`] = { ...body, submittedAt: new Date().toISOString() }
+      await writeData(data, sha)
       return res.status(201).json({ success: true })
     }
 
     return res.status(405).json({ error: 'method not allowed' })
   } catch (err) {
     console.error('updates error:', err)
-    return res.status(500).json({ error: String(err) })
+    return res.status(500).json({ error: String(err) })\
   }
 }

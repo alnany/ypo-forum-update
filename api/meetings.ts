@@ -1,40 +1,48 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN ?? ''
-const GIST_ID = process.env.GIST_ID ?? ''
-const GITHUB_HEADERS = {
+const OWNER = 'alnany'
+const REPO = 'ypo-forum-update'
+const FILE = 'data/meetings.json'
+const GH = {
   Authorization: `Bearer ${GITHUB_TOKEN}`,
   Accept: 'application/vnd.github+json',
   'Content-Type': 'application/json',
   'User-Agent': 'ypo-forum-app',
 }
 
-function formatDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split('-').map(Number)
+interface AppData {
+  meetings: Meeting[]
+  updates: Record<string, unknown>
+}
+interface Meeting {
+  id: string; date: string; displayDate: string; location: string; createdAt: string
+}
+
+function formatDate(d: string): string {
+  const [y, m, day] = d.split('-').map(Number)
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-  return `${months[month - 1]} ${day}, ${year}`
+  return `${months[m - 1]} ${day}, ${y}`
 }
 
-async function readGist() {
-  const resp = await fetch(`https://api.github.com/gists/${GIST_ID}`, { headers: GITHUB_HEADERS })
-  if (!resp.ok) throw new Error(`Gist read failed: ${resp.status} ${await resp.text()}`)
-  const gist = await resp.json() as { files: Record<string, { content?: string; raw_url?: string }> }
-  const file = gist.files['meetings.json']
-  if (!file) return { meetings: [], updates: {} }
-  let content = file.content
-  if (!content && file.raw_url) {
-    content = await fetch(file.raw_url).then(r => r.text())
-  }
-  try { return JSON.parse(content ?? '{}') } catch { return { meetings: [], updates: {} } }
+async function readData(): Promise<{ data: AppData; sha: string }> {
+  const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`, { headers: GH })
+  if (resp.status === 404) return { data: { meetings: [], updates: {} }, sha: '' }
+  if (!resp.ok) throw new Error(`Read failed: ${resp.status} ${await resp.text()}`)
+  const file = await resp.json() as { content: string; sha: string }
+  const text = Buffer.from(file.content, 'base64').toString('utf-8')
+  try { return { data: JSON.parse(text), sha: file.sha } }
+  catch { return { data: { meetings: [], updates: {} }, sha: file.sha } }
 }
 
-async function writeGist(data: object) {
-  const resp = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-    method: 'PATCH',
-    headers: GITHUB_HEADERS,
-    body: JSON.stringify({ files: { 'meetings.json': { content: JSON.stringify(data, null, 2) } } }),
+async function writeData(data: AppData, sha: string): Promise<void> {
+  const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
+  const body: Record<string, string> = { message: 'chore: update meetings data', content, branch: 'main' }
+  if (sha) body.sha = sha
+  const resp = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`, {
+    method: 'PUT', headers: GH, body: JSON.stringify(body),
   })
-  if (!resp.ok) throw new Error(`Gist write failed: ${resp.status} ${await resp.text()}`)
+  if (!resp.ok) throw new Error(`Write failed: ${resp.status} ${await resp.text()}`)
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -45,21 +53,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     if (req.method === 'GET') {
-      const data = await readGist()
-      const meetings = (data.meetings || []).sort((a: { date: string }, b: { date: string }) => b.date > a.date ? 1 : -1)
-      return res.json(meetings)
+      const { data } = await readData()
+      const sorted = (data.meetings || []).sort((a, b) => b.date > a.date ? 1 : -1)
+      return res.json(sorted)
     }
 
     if (req.method === 'POST') {
       const { date, location } = req.body as { date: string; location: string }
       if (!date || !location) return res.status(400).json({ error: 'date and location required' })
-      const data = await readGist()
-      const existing = (data.meetings || []).find((m: { id: string }) => m.id === date)
+      const { data, sha } = await readData()
+      const existing = (data.meetings || []).find((m) => m.id === date)
       if (existing) return res.status(201).json(existing)
-      const meeting = { id: date, date, displayDate: formatDate(date), location: location.trim(), createdAt: new Date().toISOString() }
+      const meeting: Meeting = { id: date, date, displayDate: formatDate(date), location: location.trim(), createdAt: new Date().toISOString() }
       data.meetings = [...(data.meetings || []), meeting]
       if (!data.updates) data.updates = {}
-      await writeGist(data)
+      await writeData(data, sha)
       return res.status(201).json(meeting)
     }
 
