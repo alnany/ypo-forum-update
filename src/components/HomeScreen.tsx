@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   MEMBERS,
   getMeetings,
@@ -30,6 +31,7 @@ function MeetingCard({
   onView: (meeting: Meeting) => void
   onDeleted: (id: string) => void
 }) {
+  const { t } = useTranslation()
   const [memberStatuses, setMemberStatuses] = useState<Record<string, boolean>>({})
   const [loadingStatus, setLoadingStatus] = useState(true)
   const [pickingMember, setPickingMember] = useState(false)
@@ -47,7 +49,7 @@ function MeetingCard({
       setShowDeleteModal(false)
       onDeleted(meeting.id)
     } else {
-      setDeleteError(result.error ?? 'Delete failed.')
+      setDeleteError(result.error ?? t('meetingCard.delete_button'))
       setDeletePassword('')
     }
   }
@@ -78,14 +80,14 @@ function MeetingCard({
         }}>
           <div className="card" style={{ padding: '24px', width: '100%', maxWidth: 360 }}>
             <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--navy)', marginBottom: 6 }}>
-              🗑️ Delete Meeting
+              {t('meetingCard.delete_title')}
             </h3>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>
-              Enter the admin password to delete <strong>{meeting.displayDate}</strong> and all its updates.
+              {t('meetingCard.delete_desc')} <strong>{meeting.displayDate}</strong>
             </p>
             <input
               type="password"
-              placeholder="Password"
+              placeholder={t('meetingCard.delete_placeholder')}
               value={deletePassword}
               autoFocus
               onChange={(e) => setDeletePassword(e.target.value)}
@@ -102,7 +104,7 @@ function MeetingCard({
                 onClick={() => { setShowDeleteModal(false); setDeletePassword(''); setDeleteError('') }}
                 disabled={deleting}
               >
-                Cancel
+                {t('meetingCard.cancel')}
               </button>
               <button
                 onClick={handleDelete}
@@ -113,7 +115,7 @@ function MeetingCard({
                   color: 'white', cursor: deleting ? 'not-allowed' : 'pointer',
                 }}
               >
-                {deleting ? 'Deleting…' : 'Delete'}
+                {deleting ? t('meetingCard.delete_deleting') : t('meetingCard.delete_button')}
               </button>
             </div>
           </div>
@@ -145,7 +147,7 @@ function MeetingCard({
                 whiteSpace: 'nowrap',
               }}
             >
-              {count}/{MEMBERS.length} submitted
+              {count}/{MEMBERS.length} {t('meetingCard.submitted')}
             </div>
           )}
           <button
@@ -173,7 +175,7 @@ function MeetingCard({
           return (
             <div
               key={m}
-              title={submitted ? `${m} — submitted` : `${m} — pending`}
+              title={submitted ? t('meetingCard.status_submitted', { member: m }) : t('meetingCard.status_pending', { member: m })}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -225,7 +227,7 @@ function MeetingCard({
       {pickingMember ? (
         <div>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--navy)', marginBottom: 10, textAlign: 'center' }}>
-            Who are you?
+            {t('meetingCard.whoAreYou')}
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 8 }}>
             {MEMBERS.map((member) => {
@@ -270,7 +272,7 @@ function MeetingCard({
             onClick={() => setPickingMember(false)}
             style={{ width: '100%', background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 12, cursor: 'pointer', padding: '4px' }}
           >
-            Cancel
+            {t('meetingCard.cancel')}
           </button>
         </div>
       ) : (
@@ -280,7 +282,7 @@ function MeetingCard({
             style={{ flex: 1, justifyContent: 'center', padding: '11px 14px', fontSize: 14 }}
             onClick={() => setPickingMember(true)}
           >
-            ✏️ My Update
+            {t('meetingCard.myUpdate')}
           </button>
           <button
             onClick={() => onView(meeting)}
@@ -296,7 +298,7 @@ function MeetingCard({
               cursor: 'pointer',
             }}
           >
-            👥 View Updates
+            {t('meetingCard.viewUpdates')}
           </button>
         </div>
       )}
@@ -313,6 +315,7 @@ function NewMeetingForm({
   onCreated: (meeting: Meeting) => void
   onCancel: () => void
 }) {
+  const { t } = useTranslation()
   const [date, setDate] = useState('')
   const [location, setLocation] = useState('')
   const [saving, setSaving] = useState(false)
@@ -320,7 +323,7 @@ function NewMeetingForm({
 
   const handleCreate = async () => {
     if (!date || !location.trim()) {
-      setError('Both date and location are required.')
+      setError(t('newMeetingForm.error_required'))
       return
     }
     setSaving(true)
@@ -329,7 +332,7 @@ function NewMeetingForm({
     if (meeting) {
       onCreated(meeting)
     } else {
-      setError('Failed to create meeting. Please try again.')
+      setError(t('newMeetingForm.error_failed'))
     }
   }
 
@@ -344,13 +347,13 @@ function NewMeetingForm({
       }}
     >
       <h3 style={{ fontSize: 15, fontWeight: 800, color: 'var(--navy)', marginBottom: 16 }}>
-        📅 New Forum Meeting
+        {t('newMeetingForm.title')}
       </h3>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Meeting Date
+            {t('newMeetingForm.dateLabel')}
           </label>
           <input
             type="date"
@@ -361,11 +364,11 @@ function NewMeetingForm({
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Location
+            {t('newMeetingForm.locationLabel')}
           </label>
           <input
             type="text"
-            placeholder="e.g. Bangkok, Thailand"
+            placeholder={t('newMeetingForm.locationPlaceholder')}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
@@ -379,7 +382,7 @@ function NewMeetingForm({
 
       <div style={{ display: 'flex', gap: 10 }}>
         <button className="btn-secondary" onClick={onCancel} style={{ flex: 1, justifyContent: 'center' }}>
-          Cancel
+          {t('meetingCard.cancel')}
         </button>
         <button
           className="btn-primary"
@@ -387,7 +390,7 @@ function NewMeetingForm({
           onClick={handleCreate}
           disabled={saving}
         >
-          {saving ? 'Creating…' : 'Create Meeting'}
+          {saving ? t('newMeetingForm.creating') : t('newMeetingForm.createButton')}
         </button>
       </div>
     </div>
@@ -402,6 +405,7 @@ interface Props {
 }
 
 export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
+  const { t } = useTranslation()
   const [meetings, setMeetings] = useState<Meeting[]>([])
   const [loading, setLoading] = useState(true)
   const [showNewForm, setShowNewForm] = useState(false)
@@ -427,8 +431,8 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
       {/* Title */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 22 }}>
         <div>
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--navy)', marginBottom: 2 }}>Forum 11</h1>
-          <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Monthly Revelation</p>
+          <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--navy)', marginBottom: 2 }}>{t('home.title')}</h1>
+          <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>{t('home.subtitle')}</p>
         </div>
         {!showNewForm && (
           <button
@@ -436,7 +440,7 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
             style={{ fontSize: 13, padding: '10px 16px' }}
             onClick={() => setShowNewForm(true)}
           >
-            + New Meeting
+            {t('home.newMeeting')}
           </button>
         )}
       </div>
@@ -449,7 +453,7 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
       {/* Meetings list */}
       {loading ? (
         <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)', fontSize: 14 }}>
-          Loading meetings…
+          {t('home.loading')}
         </div>
       ) : meetings.length === 0 ? (
         <div
@@ -462,8 +466,8 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
           }}
         >
           <div style={{ fontSize: 36, marginBottom: 12 }}>📅</div>
-          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 8 }}>No meetings yet</div>
-          <div style={{ fontSize: 13 }}>Create your first Forum meeting to get started.</div>
+          <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 8 }}>{t('home.noMeetings_title')}</div>
+          <div style={{ fontSize: 13 }}>{t('home.noMeetings_desc')}</div>
         </div>
       ) : (
         meetings.map((meeting) => (
@@ -490,7 +494,7 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
           textAlign: 'center',
         }}
       >
-        🔒 Everything shared here is strictly confidential among Forum 11 members.
+        🔒 {t('home.confidential')}
       </div>
     </div>
   )

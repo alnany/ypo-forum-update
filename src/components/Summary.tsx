@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { FormState, SectionData } from '../App'
 import { feelingsData } from '../data/feelings'
 
@@ -18,6 +19,7 @@ const coreForFeeling = (feeling: string) => {
 }
 
 function FeelingBadge({ feeling }: { feeling: string }) {
+  const { t } = useTranslation()
   const core = coreForFeeling(feeling)
   return (
     <span
@@ -33,24 +35,25 @@ function FeelingBadge({ feeling }: { feeling: string }) {
         margin: '2px 3px',
       }}
     >
-      {feeling}
+      {t(`feelings.${feeling}`, feeling)}
     </span>
   )
 }
 
 function SectionBlock({
-  title,
+  titleKey,
   icon,
-  question,
+  questionKey,
   color,
   data,
 }: {
-  title: string
+  titleKey: string
   icon: string
-  question: string
+  questionKey: string
   color: string
   data: SectionData
 }) {
+  const { t } = useTranslation()
   const hasContent = data.feelings.length > 0 || Object.values(data.feelingEvents ?? {}).some(Boolean) || data.whyItMatters1
 
   if (!hasContent) return null
@@ -77,8 +80,8 @@ function SectionBlock({
       >
         <span style={{ fontSize: 20 }}>{icon}</span>
         <div>
-          <div style={{ color: 'white', fontWeight: 800, fontSize: 16 }}>{title}</div>
-          <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: 12 }}>{question}</div>
+          <div style={{ color: 'white', fontWeight: 800, fontSize: 16 }}>{t(titleKey)}</div>
+          <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: 12 }}>{t(questionKey)}</div>
         </div>
       </div>
 
@@ -87,7 +90,7 @@ function SectionBlock({
         {data.feelings.length > 0 && (
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-              Feelings
+              {t('summary.feelings')}
             </div>
             <div>{data.feelings.map((f) => <FeelingBadge key={f} feeling={f} />)}</div>
           </div>
@@ -97,7 +100,7 @@ function SectionBlock({
         {data.feelings.length > 0 && Object.values(data.feelingEvents ?? {}).some(Boolean) && (
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
-              What Triggered Each Feeling
+              {t('summary.triggered')}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {data.feelings.filter(f => data.feelingEvents?.[f]).map((f) => {
@@ -110,7 +113,7 @@ function SectionBlock({
                       color: core?.color || '#334155',
                       borderRadius: 20, padding: '3px 10px', fontSize: 12, fontWeight: 700,
                       whiteSpace: 'nowrap', flexShrink: 0, marginTop: 2,
-                    }}>{f}</span>
+                    }}>{t(`feelings.${f}`, f)}</span>
                     <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, flex: 1, whiteSpace: 'pre-wrap', margin: 0 }}>{data.feelingEvents[f]}</p>
                   </div>
                 )
@@ -153,20 +156,20 @@ function SectionBlock({
               >
                 5%
               </span>
-              Significance
+              {t('section.sig_title')}
             </div>
 
             {(data.whyItMatters1 || data.whyItMatters2 || data.whyItMatters3) && (
               <div style={{ marginBottom: 10 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8 }}>Why it matters (×3):</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8 }}>{t('summary.whyMatters')}</div>
                 {[
-                  { label: 'Why #1', val: data.whyItMatters1 },
-                  { label: 'Why #2', val: data.whyItMatters2 },
-                  { label: 'Why #3', val: data.whyItMatters3 },
+                  { labelKey: 'section.sig_why1', val: data.whyItMatters1 },
+                  { labelKey: 'section.sig_why2', val: data.whyItMatters2 },
+                  { labelKey: 'section.sig_why3', val: data.whyItMatters3 },
                 ]
                   .filter((x) => x.val)
-                  .map(({ label, val }) => (
-                    <div key={label} style={{ display: 'flex', gap: 10, marginBottom: 6, alignItems: 'flex-start' }}>
+                  .map(({ labelKey, val }) => (
+                    <div key={labelKey} style={{ display: 'flex', gap: 10, marginBottom: 6, alignItems: 'flex-start' }}>
                       <span
                         style={{
                           background: 'var(--navy)',
@@ -179,7 +182,7 @@ function SectionBlock({
                           marginTop: 2,
                         }}
                       >
-                        {label}
+                        {t(labelKey)}
                       </span>
                       <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, flex: 1, whiteSpace: 'pre-wrap' }}>{val}</p>
                     </div>
@@ -189,7 +192,7 @@ function SectionBlock({
 
             {data.whatIRealize && (
               <div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 4 }}>What I realize about myself:</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 4 }}>{t('summary.realize')}</div>
                 <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{data.whatIRealize}</p>
               </div>
             )}
@@ -201,6 +204,7 @@ function SectionBlock({
 }
 
 export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, submitStatus = 'idle' }: Props) {
+  const { t } = useTranslation()
   const handlePrint = () => window.print()
 
   return (
@@ -217,7 +221,7 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
         }}
       >
         <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
-        <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>Monthly Revelation</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>{t('summary.title')}</h1>
         {form.memberName && (
           <p style={{ fontSize: 18, opacity: 0.9, marginBottom: 4 }}>{form.memberName}</p>
         )}
@@ -253,23 +257,23 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
 
       {/* Sections */}
       <SectionBlock
-        title="Work"
+        titleKey="section.work_title"
         icon="💼"
-        question="How do I feel about what I do?"
+        questionKey="section.work_question"
         color="#1a3660"
         data={form.work}
       />
       <SectionBlock
-        title="Family"
+        titleKey="section.family_title"
         icon="🏡"
-        question="How do I feel about the people whom I love?"
+        questionKey="section.family_question"
         color="#065f46"
         data={form.family}
       />
       <SectionBlock
-        title="Me"
+        titleKey="section.me_title"
         icon="🪞"
-        question="How do I feel about myself?"
+        questionKey="section.me_question"
         color="#5b21b6"
         data={form.me}
       />
@@ -287,15 +291,15 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
           <div style={{ background: '#b45309', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 20 }}>🗓️</span>
             <div>
-              <div style={{ color: 'white', fontWeight: 800, fontSize: 16 }}>Next 30 Days</div>
-              <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: 12 }}>How do I feel about what's ahead?</div>
+              <div style={{ color: 'white', fontWeight: 800, fontSize: 16 }}>{t('summary.next30_title')}</div>
+              <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: 12 }}>{t('summary.next30_question')}</div>
             </div>
           </div>
           <div style={{ padding: '18px 20px', background: 'white' }}>
             {form.next30.feelings.length > 0 && (
               <div style={{ marginBottom: 12 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-                  Feelings
+                  {t('summary.feelings')}
                 </div>
                 <div>{form.next30.feelings.map((f) => <FeelingBadge key={f} feeling={f} />)}</div>
               </div>
@@ -303,7 +307,7 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
             {form.next30.outlook && (
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-                  Outlook
+                  {t('summary.outlook')}
                 </div>
                 <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{form.next30.outlook}</p>
               </div>
@@ -323,7 +327,7 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
           }}
         >
           <div style={{ background: '#0B2045', padding: '12px 20px' }}>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 15 }}>💬 Something I could learn from you all</div>
+            <div style={{ color: 'white', fontWeight: 700, fontSize: 15 }}>{t('summary.learning')}</div>
           </div>
           <div style={{ padding: '16px 20px', background: 'white' }}>
             <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{form.groupLearning}</p>
@@ -342,8 +346,8 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
           }}
         >
           <div style={{ background: 'var(--gold)', padding: '12px 20px' }}>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 15 }}>🔍 I want to explore this</div>
-            <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12 }}>Important · Emotionally complex · Unsettled</div>
+            <div style={{ color: 'white', fontWeight: 700, fontSize: 15 }}>{t('summary.explore')}</div>
+            <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12 }}>{t('summary.explore_subtitle')}</div>
           </div>
           <div style={{ padding: '16px 20px', background: 'var(--gold-pale)' }}>
             <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{form.explore}</p>
@@ -364,14 +368,14 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
           color: 'var(--text-muted)',
         }}
       >
-        🔒 <strong>Confidential</strong> — This update is shared exclusively within the Forum. What's shared here stays here.
+        {t('summary.confidential')}
       </div>
 
       {/* Action buttons */}
       <div className="no-print" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
         {readOnly ? (
           <button className="btn-secondary" style={{ flex: 1, justifyContent: 'center' }} onClick={onBack}>
-            ← Back to Forum
+            {t('forumView.back')}
           </button>
         ) : submitStatus === 'success' ? (
           <div
@@ -387,12 +391,12 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
               color: '#065f46',
             }}
           >
-            ✓ Submitted to Forum 11
+            {t('summary.submitted')}
           </div>
         ) : (
           <>
             <button className="btn-secondary" onClick={onBack}>
-              ← Edit
+              {t('summary.back')}
             </button>
             {onSubmit && (
               <button
@@ -401,7 +405,11 @@ export default function Summary({ form, onBack, onRestart, readOnly, onSubmit, s
                 onClick={onSubmit}
                 disabled={submitStatus === 'submitting'}
               >
-                {submitStatus === 'submitting' ? 'Submitting…' : submitStatus === 'error' ? '⚠ Retry Submit' : '📤 Submit to Forum'}
+                {submitStatus === 'submitting'
+                  ? t('summary.submitting')
+                  : submitStatus === 'error'
+                  ? t('summary.error')
+                  : t('summary.submit')}
               </button>
             )}
             <button

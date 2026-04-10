@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { MEMBERS, getMeetingUpdates } from '../lib/api'
 import type { Meeting, ForumUpdateRecord } from '../lib/api'
 import Summary from './Summary'
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export default function ForumView({ meeting, onBack }: Props) {
+  const { t } = useTranslation()
   const [memberData, setMemberData] = useState<ForumUpdateRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -59,11 +61,11 @@ export default function ForumView({ meeting, onBack }: Props) {
               fontWeight: 600,
             }}
           >
-            ← Back
+            {t('forumView.back')}
           </button>
           <div>
             <div style={{ color: 'white', fontSize: 15, fontWeight: 700 }}>
-              {expanded}'s Update
+              {t('forumView.memberUpdate', { member: expanded })}
             </div>
             <div style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
               {meeting.displayDate} · {meeting.location}
@@ -98,7 +100,7 @@ export default function ForumView({ meeting, onBack }: Props) {
             marginBottom: 14,
           }}
         >
-          ← All Meetings
+          {t('forumView.backToMeetings')}
         </button>
         <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--navy)', marginBottom: 4 }}>
           {meeting.displayDate}
@@ -112,7 +114,7 @@ export default function ForumView({ meeting, onBack }: Props) {
       {/* Member grid */}
       {loading ? (
         <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)', fontSize: 14 }}>
-          Loading updates…
+          {t('forumView.loading')}
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
@@ -172,14 +174,14 @@ export default function ForumView({ meeting, onBack }: Props) {
                 {submitted ? (
                   <>
                     <div style={{ fontSize: 12, color: color, fontWeight: 600, marginBottom: 8 }}>
-                      ✓ Submitted {submittedDate ? `· ${submittedDate}` : ''}
+                      {t('forumView.submitted')}{submittedDate ? ` · ${submittedDate}` : ''}
                     </div>
                     <div style={{ fontSize: 12, color: color, fontWeight: 600 }}>
-                      Read update →
+                      {t('forumView.readUpdate')}
                     </div>
                   </>
                 ) : (
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Not yet submitted</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{t('forumView.notSubmitted')}</div>
                 )}
               </div>
             )

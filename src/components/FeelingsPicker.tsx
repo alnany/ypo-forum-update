@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { feelingsData } from '../data/feelings'
 
 interface Props {
@@ -20,13 +21,18 @@ feelingsData.forEach((core, ci) => {
 })
 
 export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onClose }: Props) {
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim()
     if (!q) return allFeelings
-    return allFeelings.filter((f) => f.name.toLowerCase().includes(q))
-  }, [search])
+    // Search both original name and translated name
+    return allFeelings.filter((f) =>
+      f.name.toLowerCase().includes(q) ||
+      t(`feelings.${f.name}`, f.name).toLowerCase().includes(q)
+    )
+  }, [search, t])
 
   // Group filtered feelings by core
   const grouped = useMemo(() => {
@@ -81,7 +87,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--navy)' }}>
-              How are you feeling?
+              {t('section.yourFeelings')}
             </h3>
             <button
               onClick={onClose}
@@ -106,7 +112,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
           {/* Search */}
           <input
             type="text"
-            placeholder="Search feelings…"
+            placeholder={t('picker.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             autoFocus
@@ -146,7 +152,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
                       cursor: 'pointer',
                     }}
                   >
-                    {f} <span style={{ opacity: 0.6, fontSize: 14, lineHeight: 1 }}>×</span>
+                    {t(`feelings.${f}`, f)} <span style={{ opacity: 0.6, fontSize: 14, lineHeight: 1 }}>×</span>
                   </span>
                 )
               })}
@@ -158,7 +164,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
         <div style={{ overflowY: 'auto', flex: 1, padding: '16px 20px' }}>
           {grouped.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)', fontSize: 14 }}>
-              No feelings match "{search}"
+              {t('picker.searchPlaceholder', '').replace('…', '')} "{search}"
             </div>
           ) : (
             grouped.map(({ core, feelings }) => (
@@ -178,7 +184,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
                 >
                   <span style={{ fontSize: 15 }}>{core.emoji}</span>
                   <span style={{ fontSize: 12, fontWeight: 800, color: core.color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    {core.name}
+                    {t(`feelings.${core.name}`, core.name)}
                   </span>
                 </div>
 
@@ -206,7 +212,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
                         }}
                       >
                         {selected && <span style={{ fontSize: 11 }}>✓</span>}
-                        {f.name}
+                        {t(`feelings.${f.name}`, f.name)}
                       </button>
                     )
                   })}
@@ -230,7 +236,7 @@ export default function FeelingsPicker({ selectedFeelings, onAdd, onRemove, onCl
             style={{ width: '100%', justifyContent: 'center' }}
             onClick={onClose}
           >
-            Done{selectedFeelings.length > 0 ? ` (${selectedFeelings.length} selected)` : ''}
+            {t('picker.done')}{selectedFeelings.length > 0 ? ` (${selectedFeelings.length})` : ''}
           </button>
         </div>
       </div>
