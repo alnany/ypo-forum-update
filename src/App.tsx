@@ -42,7 +42,7 @@ const emptySection = (): SectionData => ({
 
 const initialState: FormState = {
   memberName: '',
-  forumName: '',
+  forumName: 'Forum 11',
   date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
   work: emptySection(),
   family: emptySection(),
@@ -190,9 +190,9 @@ function IntroScreen({
             </label>
             <input
               type="text"
-              placeholder="e.g. YPO SEA Dragon Forum"
               value={form.forumName}
-              onChange={(e) => setForm((f) => ({ ...f, forumName: e.target.value }))}
+              readOnly
+              style={{ background: '#f8fafc', color: 'var(--text-muted)', cursor: 'default' }}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
