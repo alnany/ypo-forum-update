@@ -87,12 +87,18 @@
           "whatIRealize": "My well-being is dependent on how well business is doing."
         },
         "family": {
-          "feelings": [],
-          "feelingEvents": {},
-          "whyItMatters1": "",
-          "whyItMatters2": "",
-          "whyItMatters3": "",
-          "whatIRealize": ""
+          "feelings": [
+            "Content",
+            "Guilty"
+          ],
+          "feelingEvents": {
+            "Content": "Everyone's doing alright",
+            "Guilty": "Don't spend enough time with dad (and probably mom too)"
+          },
+          "whyItMatters1": "I wouldn't be well if they weren't well.",
+          "whyItMatters2": "Then working hard would be pointless.",
+          "whyItMatters3": "I'd be fool.",
+          "whatIRealize": "Maybe working hard and chasing after success is the wrong goal."
         },
         "me": {
           "feelings": [
@@ -123,7 +129,7 @@
         "groupLearning": "How has everyone been adopting AI?",
         "explore": ""
       },
-      "submittedAt": "2026-04-10T18:22:46.985Z"
+      "submittedAt": "2026-04-11T04:49:31.584Z"
     }
   }
 }
