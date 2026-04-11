@@ -480,16 +480,11 @@ function SectionStep({
                   updateSection({ feelings: newSectionFeelings, triggers: updatedTriggers })
                 }}
                 onRemove={(f) => {
-                  setConfirmDialog({
-                    message: t('confirm.removeFeelingFromTrigger', { feeling: t(`feelings.${f}`, f) }),
-                    onConfirm: () => {
-                      const updatedTriggers = data.triggers
-                        .map((tr) => tr.id === pickerForTrigger ? { ...tr, feelings: tr.feelings.filter((x) => x !== f) } : tr)
-                        .filter((tr) => tr.feelings.length > 0)
-                      updateSection({ triggers: updatedTriggers })
-                      setConfirmDialog(null)
-                    },
-                  })
+                  // Direct deselect from picker — confirmation is on the × pill outside
+                  const updatedTriggers = data.triggers
+                    .map((tr) => tr.id === pickerForTrigger ? { ...tr, feelings: tr.feelings.filter((x) => x !== f) } : tr)
+                    .filter((tr) => tr.feelings.length > 0)
+                  updateSection({ triggers: updatedTriggers })
                 }}
                 onClose={() => setPickerForTrigger(null)}
               />
@@ -554,7 +549,13 @@ function SectionStep({
               updateSection({ feelings: [...data.feelings, f], triggers: [...data.triggers, newTrigger] })
             }
           }}
-          onRemove={(f) => removeFeeling(f)}
+          onRemove={(f) => {
+            // Direct deselect from picker — no confirmation needed (× pill outside picker has the guard)
+            const updatedTriggers = data.triggers
+              .map((tr) => ({ ...tr, feelings: tr.feelings.filter((x) => x !== f) }))
+              .filter((tr) => tr.feelings.length > 0)
+            updateSection({ feelings: data.feelings.filter((x) => x !== f), triggers: updatedTriggers })
+          }}
           onClose={() => setShowPicker(false)}
         />
       )}
@@ -658,7 +659,7 @@ function Next30Step({ form, setForm, onNext, onBack }: { form: FormState; setFor
         <FeelingsPicker
           selectedFeelings={form.next30.feelings}
           onAdd={(f) => { if (!form.next30.feelings.includes(f)) setForm((x) => ({ ...x, next30: { ...x.next30, feelings: [...x.next30.feelings, f] } })) }}
-          onRemove={removeFeeling}
+          onRemove={(f) => setForm((x) => ({ ...x, next30: { ...x.next30, feelings: x.next30.feelings.filter((y) => y !== f) } }))}
           onClose={() => setShowPicker(false)}
         />
       )}
