@@ -201,5 +201,12 @@
     "Indifferent": "Indifferent", "Apathetic": "Apathetic",
     "Pressured": "Pressured", "Rushed": "Rushed",
     "Out of Control": "Out of Control", "Sleepy": "Sleepy", "Unfocused": "Unfocused"
+  },
+  "confirm": {
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "removeFeeling": "Remove \"{{feeling}}\" from this section? This will also remove it from any triggers.",
+    "removeFeelingFromTrigger": "Remove \"{{feeling}}\" from this trigger? If this is the only feeling, the trigger will be deleted.",
+    "deleteTrigger": "Delete this trigger ({{label}})? The event description will be lost."
   }
 }

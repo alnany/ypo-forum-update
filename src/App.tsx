@@ -276,6 +276,7 @@ function SectionStep({
   const meta = SECTION_ICON_COLOR[sectionKey]
   const [showPicker, setShowPicker] = useState(false)
   const [pickerForTrigger, setPickerForTrigger] = useState<string | null>(null)
+  const [confirmDialog, setConfirmDialog] = useState<{ message: string; onConfirm: () => void } | null>(null)
 
   const sectionTitle = t(`section.${sectionKey}_title`)
   const sectionQuestion = t(`section.${sectionKey}_question`)
@@ -317,7 +318,12 @@ function SectionStep({
   }
 
   const deleteTrigger = (id: string) => {
-    updateSection({ triggers: data.triggers.filter((t) => t.id !== id) })
+    const trigger = data.triggers.find((t) => t.id === id)
+    const label = trigger?.feelings.map((f) => t(`feelings.${f}`, f)).join(', ') || t('section.thisTrigger', 'this trigger')
+    setConfirmDialog({
+      message: t('confirm.deleteTrigger', { label }),
+      onConfirm: () => { updateSection({ triggers: data.triggers.filter((tr) => tr.id !== id) }); setConfirmDialog(null) },
+    })
   }
 
   const updateTriggerEvent = (id: string, event: string) => {
@@ -335,17 +341,29 @@ function SectionStep({
   }
 
   const removeFeelingFromTrigger = (triggerId: string, feeling: string) => {
-    const updated = data.triggers.map((t) =>
-      t.id === triggerId ? { ...t, feelings: t.feelings.filter((f) => f !== feeling) } : t
-    ).filter((t) => t.feelings.length > 0)
-    updateSection({ triggers: updated })
+    setConfirmDialog({
+      message: t('confirm.removeFeelingFromTrigger', { feeling: t(`feelings.${feeling}`, feeling) }),
+      onConfirm: () => {
+        const updated = data.triggers
+          .map((tr) => tr.id === triggerId ? { ...tr, feelings: tr.feelings.filter((f) => f !== feeling) } : tr)
+          .filter((tr) => tr.feelings.length > 0)
+        updateSection({ triggers: updated })
+        setConfirmDialog(null)
+      },
+    })
   }
 
   const removeFeeling = (f: string) => {
-    const updated = data.triggers
-      .map((t) => ({ ...t, feelings: t.feelings.filter((x) => x !== f) }))
-      .filter((t) => t.feelings.length > 0)
-    updateSection({ feelings: data.feelings.filter((x) => x !== f), triggers: updated })
+    setConfirmDialog({
+      message: t('confirm.removeFeeling', { feeling: t(`feelings.${f}`, f) }),
+      onConfirm: () => {
+        const updated = data.triggers
+          .map((tr) => ({ ...tr, feelings: tr.feelings.filter((x) => x !== f) }))
+          .filter((tr) => tr.feelings.length > 0)
+        updateSection({ feelings: data.feelings.filter((x) => x !== f), triggers: updated })
+        setConfirmDialog(null)
+      },
+    })
   }
 
   return (
@@ -565,6 +583,33 @@ function SectionStep({
           onRemove={(f) => removeFeeling(f)}
           onClose={() => setShowPicker(false)}
         />
+      )}
+
+      {/* Confirmation dialog */}
+      {confirmDialog && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}
+          onClick={(e) => e.target === e.currentTarget && setConfirmDialog(null)}
+        >
+          <div style={{ background: 'white', borderRadius: 16, padding: '24px', width: '100%', maxWidth: 340, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--navy)', marginBottom: 20, lineHeight: 1.5 }}>{confirmDialog.message}</p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button
+                onClick={() => setConfirmDialog(null)}
+                className="btn-secondary"
+                style={{ flex: 1, justifyContent: 'center' }}
+              >
+                {t('confirm.cancel', 'Cancel')}
+              </button>
+              <button
+                onClick={confirmDialog.onConfirm}
+                style={{ flex: 1, padding: '10px', background: '#ef4444', border: 'none', borderRadius: 8, color: 'white', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+              >
+                {t('confirm.remove', 'Remove')}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

@@ -201,5 +201,12 @@
     "Indifferent": "冷漠", "Apathetic": "漠然",
     "Pressured": "压力山大", "Rushed": "匆忙",
     "Out of Control": "失控", "Sleepy": "困倦", "Unfocused": "注意力分散"
+  },
+  "confirm": {
+    "cancel": "取消",
+    "remove": "删除",
+    "removeFeeling": "从此部分删除「{{feeling}}」？这也会从所有触发事件中移除它。",
+    "removeFeelingFromTrigger": "从此触发事件中移除「{{feeling}}」？如果这是唯一的感受，该触发事件将被删除。",
+    "deleteTrigger": "删除此触发事件（{{label}}）？相关描述将会丢失。"
   }
 }
