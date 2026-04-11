@@ -141,7 +141,13 @@
   "picker": {
     "searchPlaceholder": "搜索感受…",
     "addFeeling": "添加感受",
-    "done": "完成"
+    "done": "完成",
+    "removeConfirmTitle": "删除感受？",
+    "removeConfirmBody": "这也会删除相关的备注内容。"
+  },
+  "common": {
+    "cancel": "取消",
+    "remove": "删除"
   },
   "feelings": {
     "Happy": "快乐", "Surprised": "惊讶", "Fearful": "恐惧",

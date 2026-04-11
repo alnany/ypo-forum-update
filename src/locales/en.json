@@ -141,7 +141,13 @@
   "picker": {
     "searchPlaceholder": "Search feelings…",
     "addFeeling": "Add Feeling",
-    "done": "Done"
+    "done": "Done",
+    "removeConfirmTitle": "Remove feeling?",
+    "removeConfirmBody": "This will also remove its associated notes."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "remove": "Remove"
   },
   "feelings": {
     "Happy": "Happy", "Surprised": "Surprised", "Fearful": "Fearful",
