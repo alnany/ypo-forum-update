@@ -330,15 +330,6 @@ function SectionStep({
     updateSection({ triggers: data.triggers.map((t) => t.id === id ? { ...t, event } : t) })
   }
 
-  const addFeelingToTrigger = (triggerId: string, feeling: string) => {
-    updateSection({
-      triggers: data.triggers.map((t) =>
-        t.id === triggerId && !t.feelings.includes(feeling)
-          ? { ...t, feelings: [...t.feelings, feeling] }
-          : t
-      ),
-    })
-  }
 
   const removeFeelingFromTrigger = (triggerId: string, feeling: string) => {
     setConfirmDialog({
@@ -471,54 +462,37 @@ function SectionStep({
             + {t('section.addTrigger', 'Add another trigger')}
           </button>
 
-          {/* Mini feeling picker for adding to a specific trigger */}
+          {/* Full FeelingsPicker for adding feeling to a specific trigger */}
           {pickerForTrigger && (() => {
             const trigger = data.triggers.find((t) => t.id === pickerForTrigger)
             if (!trigger) return null
             return (
-              <div
-                style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}
-                onClick={(e) => e.target === e.currentTarget && setPickerForTrigger(null)}
-              >
-                <div style={{ background: 'white', borderRadius: 16, padding: '20px', width: '100%', maxWidth: 360, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--navy)', marginBottom: 14 }}>
-                    {t('section.addFeelingToTrigger', 'Add feeling to this trigger')}
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
-                    {data.feelings.map((f) => {
-                      const core = coreForFeeling(f)
-                      const already = trigger.feelings.includes(f)
-                      return (
-                        <button
-                          key={f}
-                          onClick={() => { if (!already) addFeelingToTrigger(trigger.id, f) }}
-                          style={{
-                            background: already ? (core?.color || '#94a3b8') : (core?.bgColor || '#f1f5f9'),
-                            border: `1.5px solid ${core?.color || '#94a3b8'}`,
-                            borderRadius: 20,
-                            padding: '5px 14px',
-                            fontSize: 13,
-                            fontWeight: 700,
-                            color: already ? 'white' : (core?.color || '#334155'),
-                            cursor: already ? 'default' : 'pointer',
-                            opacity: already ? 0.6 : 1,
-                          }}
-                        >
-                          {already && <span style={{ fontSize: 11, marginRight: 4 }}>✓</span>}
-                          {t(`feelings.${f}`, f)}
-                        </button>
-                      )
-                    })}
-                  </div>
-                  <button
-                    onClick={() => setPickerForTrigger(null)}
-                    className="btn-primary"
-                    style={{ width: '100%', justifyContent: 'center' }}
-                  >
-                    {t('picker.done', 'Done')}
-                  </button>
-                </div>
-              </div>
+              <FeelingsPicker
+                selectedFeelings={trigger.feelings}
+                onAdd={(f) => {
+                  // Add to section feelings if not already there, then add to trigger
+                  const newSectionFeelings = data.feelings.includes(f) ? data.feelings : [...data.feelings, f]
+                  const updatedTriggers = data.triggers.map((tr) =>
+                    tr.id === pickerForTrigger && !tr.feelings.includes(f)
+                      ? { ...tr, feelings: [...tr.feelings, f] }
+                      : tr
+                  )
+                  updateSection({ feelings: newSectionFeelings, triggers: updatedTriggers })
+                }}
+                onRemove={(f) => {
+                  setConfirmDialog({
+                    message: t('confirm.removeFeelingFromTrigger', { feeling: t(`feelings.${f}`, f) }),
+                    onConfirm: () => {
+                      const updatedTriggers = data.triggers
+                        .map((tr) => tr.id === pickerForTrigger ? { ...tr, feelings: tr.feelings.filter((x) => x !== f) } : tr)
+                        .filter((tr) => tr.feelings.length > 0)
+                      updateSection({ triggers: updatedTriggers })
+                      setConfirmDialog(null)
+                    },
+                  })
+                }}
+                onClose={() => setPickerForTrigger(null)}
+              />
             )
           })()}
         </div>
