@@ -6,7 +6,7 @@ import FeelingsPicker from './components/FeelingsPicker'
 import Summary from './components/Summary'
 import HomeScreen from './components/HomeScreen'
 import ForumView from './components/ForumView'
-import { saveUpdate } from './lib/api'
+import { saveUpdate, getMemberUpdate } from './lib/api'
 import type { Meeting, MemberName } from './lib/api'
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -544,10 +544,11 @@ export default function App() {
     window.scrollTo(0, 0)
   }
 
-  const startUpdate = (meeting: Meeting, member: MemberName) => {
+  const startUpdate = async (meeting: Meeting, member: MemberName) => {
     const key = draftKey(meeting.id, member)
     const saved = localStorage.getItem(key)
     if (saved) {
+      // In-progress draft takes priority
       try {
         const { form: savedForm, step: savedStep } = JSON.parse(saved)
         setForm({ ...savedForm, memberName: member, meetingId: meeting.id, date: meeting.displayDate, location: meeting.location })
@@ -557,8 +558,16 @@ export default function App() {
         setStep('intro')
       }
     } else {
-      setForm(makeInitialState(member, meeting))
-      setStep('intro')
+      // Check if a submitted update already exists on the server
+      const existing = await getMemberUpdate(member, meeting.id)
+      if (existing?.hasUpdate && existing.data) {
+        // Load existing submission for editing (skip intro)
+        setForm({ ...existing.data, memberName: member, meetingId: meeting.id, date: meeting.displayDate, location: meeting.location })
+        setStep('work')
+      } else {
+        setForm(makeInitialState(member, meeting))
+        setStep('intro')
+      }
     }
     setActiveMeeting(meeting)
     setSubmitStatus('idle')
