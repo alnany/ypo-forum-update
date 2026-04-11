@@ -620,6 +620,16 @@ function SectionStep({
 function Next30Step({ form, setForm, onNext, onBack }: { form: FormState; setForm: React.Dispatch<React.SetStateAction<FormState>>; onNext: () => void; onBack: () => void }) {
   const { t } = useTranslation()
   const [showPicker, setShowPicker] = useState(false)
+  const [confirmDialog, setConfirmDialog] = useState<{ message: string; onConfirm: () => void } | null>(null)
+  const removeFeeling = (f: string) => {
+    setConfirmDialog({
+      message: t('confirm.removeFeeling', { feeling: t(`feelings.${f}`, f) }),
+      onConfirm: () => {
+        setForm((x) => ({ ...x, next30: { ...x.next30, feelings: x.next30.feelings.filter((y) => y !== f) } }))
+        setConfirmDialog(null)
+      },
+    })
+  }
   const coreForFeeling = (feeling: string) => {
     for (const core of feelingsData) {
       if (core.secondary.find((s) => s.name === feeling || s.tertiary.includes(feeling))) return core
@@ -654,7 +664,7 @@ function Next30Step({ form, setForm, onNext, onBack }: { form: FormState; setFor
               return (
                 <span key={f} className="feeling-tag" style={{ background: core?.bgColor || '#f1f5f9', borderColor: core?.color || '#cbd5e1', color: core?.color || '#334155' }}>
                   {t(`feelings.${f}`, f)}
-                  <button onClick={() => setForm((x) => ({ ...x, next30: { ...x.next30, feelings: x.next30.feelings.filter((y) => y !== f) } }))}>×</button>
+                  <button onClick={() => removeFeeling(f)}>×</button>
                 </span>
               )
             })}
@@ -674,9 +684,23 @@ function Next30Step({ form, setForm, onNext, onBack }: { form: FormState; setFor
         <FeelingsPicker
           selectedFeelings={form.next30.feelings}
           onAdd={(f) => { if (!form.next30.feelings.includes(f)) setForm((x) => ({ ...x, next30: { ...x.next30, feelings: [...x.next30.feelings, f] } })) }}
-          onRemove={(f) => setForm((x) => ({ ...x, next30: { ...x.next30, feelings: x.next30.feelings.filter((y) => y !== f) } }))}
+          onRemove={removeFeeling}
           onClose={() => setShowPicker(false)}
         />
+      )}
+      {confirmDialog && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}
+          onClick={(e) => e.target === e.currentTarget && setConfirmDialog(null)}
+        >
+          <div style={{ background: 'white', borderRadius: 16, padding: '24px', width: '100%', maxWidth: 340, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+            <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--navy)', marginBottom: 20, lineHeight: 1.5 }}>{confirmDialog.message}</p>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setConfirmDialog(null)} className="btn-secondary" style={{ flex: 1, justifyContent: 'center' }}>{t('confirm.cancel', 'Cancel')}</button>
+              <button onClick={confirmDialog.onConfirm} style={{ flex: 1, padding: '10px', background: '#ef4444', border: 'none', borderRadius: 8, color: 'white', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>{t('confirm.remove', 'Remove')}</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
