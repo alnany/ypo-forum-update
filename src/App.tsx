@@ -11,9 +11,16 @@ import type { Meeting, MemberName } from './lib/api'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+export interface TriggerEntry {
+  id: string
+  event: string
+  feelings: string[]
+}
+
 export interface SectionData {
   feelings: string[]
-  feelingEvents: Record<string, string>   // feeling → event that triggered it
+  triggers: TriggerEntry[]
+  feelingEvents?: Record<string, string>  // legacy — migrated on load
   whyItMatters1: string
   whyItMatters2: string
   whyItMatters3: string
@@ -39,7 +46,7 @@ export interface FormState {
 
 const emptySection = (): SectionData => ({
   feelings: [],
-  feelingEvents: {},
+  triggers: [],
   whyItMatters1: '',
   whyItMatters2: '',
   whyItMatters3: '',
@@ -267,20 +274,78 @@ function SectionStep({
 }) {
   const { t } = useTranslation()
   const meta = SECTION_ICON_COLOR[sectionKey]
-  const data = form[sectionKey]
   const [showPicker, setShowPicker] = useState(false)
+  const [pickerForTrigger, setPickerForTrigger] = useState<string | null>(null)
 
   const sectionTitle = t(`section.${sectionKey}_title`)
   const sectionQuestion = t(`section.${sectionKey}_question`)
 
+  // Migrate legacy feelingEvents → triggers on first access
+  const rawData = form[sectionKey]
+  const data: SectionData = (() => {
+    if (rawData.feelingEvents && (!rawData.triggers || rawData.triggers.length === 0)) {
+      const migrated = Object.entries(rawData.feelingEvents)
+        .filter(([f]) => rawData.feelings.includes(f))
+        .map(([feeling, event]) => ({ id: `${feeling}-${Date.now()}`, event, feelings: [feeling] }))
+      return { ...rawData, triggers: migrated, feelingEvents: undefined }
+    }
+    return { ...rawData, triggers: rawData.triggers ?? [] }
+  })()
+
   const updateSection = (patch: Partial<SectionData>) =>
     setForm((f) => ({ ...f, [sectionKey]: { ...f[sectionKey], ...patch } }))
+
+  // Sync migrated data back once
+  useEffect(() => {
+    if (rawData.feelingEvents && (!rawData.triggers || rawData.triggers.length === 0)) {
+      updateSection({ triggers: data.triggers, feelingEvents: undefined })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const coreForFeeling = (feeling: string) => {
     for (const core of feelingsData) {
       if (core.secondary.find((s) => s.name === feeling || s.tertiary.includes(feeling))) return core
     }
     return null
+  }
+
+  const newTriggerId = () => `trigger-${Date.now()}-${Math.random().toString(36).slice(2)}`
+
+  const addTrigger = (withFeelings: string[] = []) => {
+    updateSection({ triggers: [...data.triggers, { id: newTriggerId(), event: '', feelings: withFeelings }] })
+  }
+
+  const deleteTrigger = (id: string) => {
+    updateSection({ triggers: data.triggers.filter((t) => t.id !== id) })
+  }
+
+  const updateTriggerEvent = (id: string, event: string) => {
+    updateSection({ triggers: data.triggers.map((t) => t.id === id ? { ...t, event } : t) })
+  }
+
+  const addFeelingToTrigger = (triggerId: string, feeling: string) => {
+    updateSection({
+      triggers: data.triggers.map((t) =>
+        t.id === triggerId && !t.feelings.includes(feeling)
+          ? { ...t, feelings: [...t.feelings, feeling] }
+          : t
+      ),
+    })
+  }
+
+  const removeFeelingFromTrigger = (triggerId: string, feeling: string) => {
+    const updated = data.triggers.map((t) =>
+      t.id === triggerId ? { ...t, feelings: t.feelings.filter((f) => f !== feeling) } : t
+    ).filter((t) => t.feelings.length > 0)
+    updateSection({ triggers: updated })
+  }
+
+  const removeFeeling = (f: string) => {
+    const updated = data.triggers
+      .map((t) => ({ ...t, feelings: t.feelings.filter((x) => x !== f) }))
+      .filter((t) => t.feelings.length > 0)
+    updateSection({ feelings: data.feelings.filter((x) => x !== f), triggers: updated })
   }
 
   return (
@@ -313,12 +378,7 @@ function SectionStep({
               return (
                 <span key={f} className="feeling-tag" style={{ background: core?.bgColor || '#f1f5f9', borderColor: core?.color || '#cbd5e1', color: core?.color || '#334155' }}>
                   {t(`feelings.${f}`, f)}
-                  <button onClick={() => {
-                    const updated = data.feelings.filter((x) => x !== f)
-                    const updatedEvents = { ...data.feelingEvents }
-                    delete updatedEvents[f]
-                    updateSection({ feelings: updated, feelingEvents: updatedEvents })
-                  }}>×</button>
+                  <button onClick={() => removeFeeling(f)}>×</button>
                 </span>
               )
             })}
@@ -326,32 +386,123 @@ function SectionStep({
         )}
       </div>
 
-      {/* Per-feeling events */}
+      {/* Triggers */}
       {data.feelings.length > 0 && (
         <div className="card" style={{ padding: '22px 24px', marginBottom: 16 }}>
           <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy)', marginBottom: 4 }}>{t('section.triggered_title')}</h3>
           <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>{t('section.triggered_desc')}</p>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {data.feelings.map((f) => {
-              const core = coreForFeeling(f)
-              return (
-                <div key={f} style={{ borderRadius: 8, border: `1.5px solid ${core?.color || '#cbd5e1'}44`, overflow: 'hidden' }}>
-                  <div style={{ background: core?.bgColor || '#f1f5f9', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ background: core?.color || '#94a3b8', color: 'white', borderRadius: 20, padding: '3px 12px', fontSize: 13, fontWeight: 700 }}>{t(`feelings.${f}`, f)}</span>
-                  </div>
-                  <div style={{ padding: '10px 14px' }}>
-                    <textarea
-                      rows={2}
-                      placeholder={t('section.triggered_placeholder', { feeling: t(`feelings.${f}`, f).toLowerCase() })}
-                      value={data.feelingEvents[f] || ''}
-                      onChange={(e) => updateSection({ feelingEvents: { ...data.feelingEvents, [f]: e.target.value } })}
-                      style={{ marginBottom: 0 }}
-                    />
-                  </div>
+            {data.triggers.map((trigger) => (
+              <div key={trigger.id} style={{ borderRadius: 10, border: '1.5px solid var(--border)', overflow: 'hidden' }}>
+                {/* Trigger header: feelings + controls */}
+                <div style={{ background: '#f8fafc', padding: '10px 14px', display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+                  {trigger.feelings.map((f) => {
+                    const core = coreForFeeling(f)
+                    return (
+                      <span
+                        key={f}
+                        style={{
+                          display: 'inline-flex', alignItems: 'center', gap: 4,
+                          background: core?.color || '#94a3b8', color: 'white',
+                          borderRadius: 20, padding: '3px 10px', fontSize: 13, fontWeight: 700,
+                        }}
+                      >
+                        {t(`feelings.${f}`, f)}
+                        <button
+                          onClick={() => removeFeelingFromTrigger(trigger.id, f)}
+                          style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.8)', fontSize: 15, cursor: 'pointer', padding: '0 0 0 2px', lineHeight: 1 }}
+                        >×</button>
+                      </span>
+                    )
+                  })}
+                  <button
+                    onClick={() => setPickerForTrigger(trigger.id)}
+                    style={{ background: 'white', border: '1.5px dashed var(--border)', borderRadius: 20, padding: '3px 12px', fontSize: 12, fontWeight: 600, color: 'var(--navy)', cursor: 'pointer' }}
+                  >
+                    + {t('section.addFeeling')}
+                  </button>
+                  <button
+                    onClick={() => deleteTrigger(trigger.id)}
+                    style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: 16, cursor: 'pointer', padding: '2px 4px', lineHeight: 1 }}
+                    title={t('common.remove', 'Remove')}
+                  >🗑</button>
                 </div>
-              )
-            })}
+                {/* Event textarea */}
+                <div style={{ padding: '10px 14px' }}>
+                  <textarea
+                    rows={2}
+                    placeholder={t('section.triggered_placeholder_multi', 'What happened? Describe the event or situation that triggered these feelings…')}
+                    value={trigger.event}
+                    onChange={(e) => updateTriggerEvent(trigger.id, e.target.value)}
+                    style={{ marginBottom: 0 }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
+
+          <button
+            onClick={() => addTrigger([])}
+            style={{
+              marginTop: 14, width: '100%', padding: '10px', background: 'none',
+              border: '1.5px dashed var(--border)', borderRadius: 10,
+              fontSize: 13, fontWeight: 600, color: 'var(--navy)', cursor: 'pointer',
+            }}
+          >
+            + {t('section.addTrigger', 'Add another trigger')}
+          </button>
+
+          {/* Mini feeling picker for adding to a specific trigger */}
+          {pickerForTrigger && (() => {
+            const trigger = data.triggers.find((t) => t.id === pickerForTrigger)
+            if (!trigger) return null
+            return (
+              <div
+                style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 24px' }}
+                onClick={(e) => e.target === e.currentTarget && setPickerForTrigger(null)}
+              >
+                <div style={{ background: 'white', borderRadius: 16, padding: '20px', width: '100%', maxWidth: 360, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--navy)', marginBottom: 14 }}>
+                    {t('section.addFeelingToTrigger', 'Add feeling to this trigger')}
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+                    {data.feelings.map((f) => {
+                      const core = coreForFeeling(f)
+                      const already = trigger.feelings.includes(f)
+                      return (
+                        <button
+                          key={f}
+                          onClick={() => { if (!already) addFeelingToTrigger(trigger.id, f) }}
+                          style={{
+                            background: already ? (core?.color || '#94a3b8') : (core?.bgColor || '#f1f5f9'),
+                            border: `1.5px solid ${core?.color || '#94a3b8'}`,
+                            borderRadius: 20,
+                            padding: '5px 14px',
+                            fontSize: 13,
+                            fontWeight: 700,
+                            color: already ? 'white' : (core?.color || '#334155'),
+                            cursor: already ? 'default' : 'pointer',
+                            opacity: already ? 0.6 : 1,
+                          }}
+                        >
+                          {already && <span style={{ fontSize: 11, marginRight: 4 }}>✓</span>}
+                          {t(`feelings.${f}`, f)}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <button
+                    onClick={() => setPickerForTrigger(null)}
+                    className="btn-primary"
+                    style={{ width: '100%', justifyContent: 'center' }}
+                  >
+                    {t('picker.done', 'Done')}
+                  </button>
+                </div>
+              </div>
+            )
+          })()}
         </div>
       )}
 
@@ -405,12 +556,13 @@ function SectionStep({
       {showPicker && (
         <FeelingsPicker
           selectedFeelings={data.feelings}
-          onAdd={(f) => { if (!data.feelings.includes(f)) updateSection({ feelings: [...data.feelings, f], feelingEvents: { ...data.feelingEvents, [f]: '' } }) }}
-          onRemove={(f) => {
-            const updatedEvents = { ...data.feelingEvents }
-            delete updatedEvents[f]
-            updateSection({ feelings: data.feelings.filter((x) => x !== f), feelingEvents: updatedEvents })
+          onAdd={(f) => {
+            if (!data.feelings.includes(f)) {
+              const newTrigger: TriggerEntry = { id: newTriggerId(), event: '', feelings: [f] }
+              updateSection({ feelings: [...data.feelings, f], triggers: [...data.triggers, newTrigger] })
+            }
           }}
+          onRemove={(f) => removeFeeling(f)}
           onClose={() => setShowPicker(false)}
         />
       )}

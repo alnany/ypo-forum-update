@@ -54,7 +54,7 @@ function SectionBlock({
   data: SectionData
 }) {
   const { t } = useTranslation()
-  const hasContent = data.feelings.length > 0 || Object.values(data.feelingEvents ?? {}).some(Boolean) || data.whyItMatters1
+  const hasContent = data.feelings.length > 0 || (data.triggers ?? []).some(tr => tr.event.trim()) || data.whyItMatters1
 
   if (!hasContent) return null
 
@@ -96,28 +96,31 @@ function SectionBlock({
           </div>
         )}
 
-        {/* Per-feeling Events */}
-        {data.feelings.length > 0 && Object.values(data.feelingEvents ?? {}).some(Boolean) && (
+        {/* Trigger entries */}
+        {data.triggers && data.triggers.filter(tr => tr.event.trim()).length > 0 && (
           <div style={{ marginBottom: 14 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
               {t('summary.triggered')}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {data.feelings.filter(f => data.feelingEvents?.[f]).map((f) => {
-                const core = coreForFeeling(f)
-                return (
-                  <div key={f} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                    <span style={{
-                      background: core?.bgColor || '#f1f5f9',
-                      border: `1px solid ${core?.color || '#cbd5e1'}55`,
-                      color: core?.color || '#334155',
-                      borderRadius: 20, padding: '3px 10px', fontSize: 12, fontWeight: 700,
-                      whiteSpace: 'nowrap', flexShrink: 0, marginTop: 2,
-                    }}>{t(`feelings.${f}`, f)}</span>
-                    <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, flex: 1, whiteSpace: 'pre-wrap', margin: 0 }}>{data.feelingEvents[f]}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {data.triggers.filter(tr => tr.event.trim()).map((tr) => (
+                <div key={tr.id} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, flexShrink: 0, maxWidth: '45%' }}>
+                    {tr.feelings.map((f) => {
+                      const core = coreForFeeling(f)
+                      return (
+                        <span key={f} style={{
+                          background: core?.bgColor || '#f1f5f9',
+                          border: `1px solid ${core?.color || '#cbd5e1'}55`,
+                          color: core?.color || '#334155',
+                          borderRadius: 20, padding: '2px 8px', fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap',
+                        }}>{t(`feelings.${f}`, f)}</span>
+                      )
+                    })}
                   </div>
-                )
-              })}
+                  <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.6, flex: 1, whiteSpace: 'pre-wrap', margin: 0 }}>{tr.event}</p>
+                </div>
+              ))}
             </div>
           </div>
         )}
