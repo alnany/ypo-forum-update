@@ -130,6 +130,79 @@
         "explore": ""
       },
       "submittedAt": "2026-04-11T04:49:31.584Z"
+    },
+    "Eric:2026-03-27": {
+      "member": "Eric",
+      "meetingId": "2026-03-27",
+      "displayDate": "March 27, 2026",
+      "location": "Macau",
+      "data": {
+        "memberName": "Eric",
+        "forumName": "Forum 11",
+        "meetingId": "2026-03-27",
+        "date": "March 27, 2026",
+        "location": "Macau",
+        "work": {
+          "feelings": [
+            "Optimistic",
+            "Energetic",
+            "Anxious",
+            "Disappointed"
+          ],
+          "feelingEvents": {
+            "Optimistic": "Closing on new acquisition, many long hanging fruit, identified new site leader ",
+            "Energetic": "Closing on new acquisition, many long hanging fruit, identified new site leader ",
+            "Anxious": "Lack of team and preparation for smooth transition, still need to be very hands on. ",
+            "Disappointed": "Lack of team and preparation for smooth transition, still need to be very hands on. "
+          },
+          "whyItMatters1": "Still have not been able to build a full swat team to do this type of work",
+          "whyItMatters2": "Feels like failure, not progressing to expected pace of change",
+          "whyItMatters3": "Challenges my image/ identify of being capable, ",
+          "whatIRealize": "Identity still matters regardless what I tell myself"
+        },
+        "family": {
+          "feelings": [
+            "Proud",
+            "Shocked",
+            "Thankful"
+          ],
+          "feelingEvents": {
+            "Proud": "I had my kids assessed and they were inconclusive on adhd but pleasant surprise on their IQ scores. It was not that obvious when comparing to other friends kids I always assume not that smart. ",
+            "Shocked": "",
+            "Thankful": "Family needs me and so much love, even tho I travel so much they are very attached to me"
+          },
+          "whyItMatters1": "I always put myself and my family down, we are not academics not in our blood, sold ourselves short. We are a work ethic family, scrappy , figure it out types",
+          "whyItMatters2": "My general negative self talk, maybe modeling for my kids the same unconsciously",
+          "whyItMatters3": "",
+          "whatIRealize": "Need to bring more optimism to family aspect not just career and business aspect, there is a way to have it all… business me, family. Need to be more intentional"
+        },
+        "me": {
+          "feelings": [
+            "Hopeful",
+            "Confident"
+          ],
+          "feelingEvents": {
+            "Hopeful": "Progress in the transformation",
+            "Confident": "Progress in the transformation"
+          },
+          "whyItMatters1": "Ties back to identity",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": "I’m adhd but I love building, I assumed I dislike being hands on but with AI I’m hooked, slow but surely making progress"
+        },
+        "next30": {
+          "feelings": [
+            "Overwhelmed",
+            "Optimistic",
+            "Hopeful",
+            "Confident"
+          ],
+          "outlook": "Smooth transition of new business, how to I get more involved with my kids activities support their development-Lacking, AI progress "
+        },
+        "groupLearning": "AI!",
+        "explore": "Need to think about more"
+      },
+      "submittedAt": "2026-04-11T11:23:28.454Z"
     }
   }
 }
