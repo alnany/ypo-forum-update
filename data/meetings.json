@@ -77,28 +77,52 @@
             "Optimistic",
             "Worried"
           ],
-          "feelingEvents": {
-            "Optimistic": "The Pakistan project is going well, Bonbon model is working, and cashflow has improved.",
-            "Worried": "Bonbon was rejected from the App Store due to date booking feature, without an iOS marketing can be more difficult."
-          },
           "whyItMatters1": "I need to start turning things around and make money.",
           "whyItMatters2": "Because I am unwell when business is not going well.",
           "whyItMatters3": "I want to be happier and more confident.",
-          "whatIRealize": "My well-being is dependent on how well business is doing."
+          "whatIRealize": "My well-being is dependent on how well business is doing.",
+          "triggers": [
+            {
+              "id": "Optimistic-1775991170583",
+              "event": "The Pakistan project is going well, Bonbon model is working, and cashflow has improved.",
+              "feelings": [
+                "Optimistic"
+              ]
+            },
+            {
+              "id": "Worried-1775991170583",
+              "event": "Bonbon was rejected from the App Store due to date booking feature, without an iOS marketing can be more difficult.",
+              "feelings": [
+                "Worried"
+              ]
+            }
+          ]
         },
         "family": {
           "feelings": [
             "Content",
             "Guilty"
           ],
-          "feelingEvents": {
-            "Content": "Everyone's doing alright",
-            "Guilty": "Don't spend enough time with dad (and probably mom too)"
-          },
           "whyItMatters1": "I wouldn't be well if they weren't well.",
           "whyItMatters2": "Then working hard would be pointless.",
           "whyItMatters3": "I'd be fool.",
-          "whatIRealize": "Maybe working hard and chasing after success is the wrong goal."
+          "whatIRealize": "Maybe working hard and chasing after success is the wrong goal.",
+          "triggers": [
+            {
+              "id": "Content-1775996941033",
+              "event": "Everyone's doing alright",
+              "feelings": [
+                "Content"
+              ]
+            },
+            {
+              "id": "Guilty-1775996941033",
+              "event": "Don't spend enough time with dad (and probably mom too)",
+              "feelings": [
+                "Guilty"
+              ]
+            }
+          ]
         },
         "me": {
           "feelings": [
@@ -106,15 +130,33 @@
             "Optimistic",
             "Creative"
           ],
-          "feelingEvents": {
-            "Anxious": "Projects are in progress but not yielding real results yet.",
-            "Optimistic": "The projects should turn out well this year.",
-            "Creative": "Been playing a lot with AI agents and it's just so damn powerful."
-          },
           "whyItMatters1": "I need a win.",
           "whyItMatters2": "Because I am awesome I'm supposed to be winning.",
           "whyItMatters3": "Validates me.",
-          "whatIRealize": "Need to be \"successful\"."
+          "whatIRealize": "Need to be \"successful\".",
+          "triggers": [
+            {
+              "id": "Anxious-1775996936643",
+              "event": "Projects are in progress but not yielding real results yet.",
+              "feelings": [
+                "Anxious"
+              ]
+            },
+            {
+              "id": "Optimistic-1775996936643",
+              "event": "The projects should turn out well this year.",
+              "feelings": [
+                "Optimistic"
+              ]
+            },
+            {
+              "id": "Creative-1775996936643",
+              "event": "Been playing a lot with AI agents and it's just so damn powerful.",
+              "feelings": [
+                "Creative"
+              ]
+            }
+          ]
         },
         "next30": {
           "feelings": [
@@ -129,7 +171,7 @@
         "groupLearning": "How has everyone been adopting AI?",
         "explore": ""
       },
-      "submittedAt": "2026-04-11T04:49:31.584Z"
+      "submittedAt": "2026-04-12T12:29:28.852Z"
     },
     "Eric:2026-03-27": {
       "member": "Eric",
