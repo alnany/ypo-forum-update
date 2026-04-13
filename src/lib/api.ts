@@ -89,6 +89,45 @@ export async function getMemberUpdate(member: string, meetingId: string): Promis
   }
 }
 
+// ── Parking Lot ─────────────────────────────────────────────────────────────
+
+export interface ParkingLotItem {
+  id: string
+  text: string
+  member: string
+  meetingId: string
+  displayDate: string
+  source: 'groupLearning' | 'explore'
+  checked: boolean
+  deleted: boolean
+}
+
+export async function getParkingLot(): Promise<ParkingLotItem[]> {
+  try {
+    const resp = await fetch('/api/parking-lot')
+    if (!resp.ok) return []
+    return resp.json()
+  } catch {
+    return []
+  }
+}
+
+export async function updateParkingLotItem(
+  id: string,
+  patch: { checked?: boolean; deleted?: boolean }
+): Promise<boolean> {
+  try {
+    const resp = await fetch('/api/parking-lot', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...patch }),
+    })
+    return resp.ok
+  } catch {
+    return false
+  }
+}
+
 export async function saveUpdate(payload: {
   member: string
   meetingId: string

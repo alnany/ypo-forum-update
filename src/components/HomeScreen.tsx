@@ -8,6 +8,7 @@ import {
   deleteMeeting,
 } from '../lib/api'
 import type { Meeting, MemberName, ForumUpdateRecord } from '../lib/api'
+import ParkingLot from './ParkingLot'
 
 const MEMBER_COLORS: Record<string, string> = {
   Chris: '#1a3660',
@@ -499,6 +500,9 @@ export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {
           />
         ))
       )}
+
+      {/* Parking Lot */}
+      <ParkingLot />
 
       {/* Confidentiality note */}
       <div
