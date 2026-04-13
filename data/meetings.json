@@ -249,7 +249,7 @@
   },
   "parkingLotState": {
     "pl_65c85630": {
-      "checked": true,
+      "checked": false,
       "deleted": false
     }
   }
