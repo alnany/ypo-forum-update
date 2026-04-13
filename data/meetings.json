@@ -246,5 +246,11 @@
       },
       "submittedAt": "2026-04-11T11:23:28.454Z"
     }
+  },
+  "parkingLotState": {
+    "pl_65c85630": {
+      "checked": true,
+      "deleted": false
+    }
   }
 }
