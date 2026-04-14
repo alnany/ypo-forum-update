@@ -371,6 +371,104 @@
         "explore": ""
       },
       "submittedAt": "2026-04-13T16:02:07.928Z"
+    },
+    "Julian:2026-03-27": {
+      "member": "Julian",
+      "meetingId": "2026-03-27",
+      "displayDate": "March 27, 2026",
+      "location": "Macau",
+      "data": {
+        "memberName": "Julian",
+        "forumName": "Forum 11",
+        "meetingId": "2026-03-27",
+        "date": "March 27, 2026",
+        "location": "Macau",
+        "work": {
+          "feelings": [
+            "Valued",
+            "Respected",
+            "Accepted",
+            "Proud"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1776153702281-sb8gamjzujp",
+              "event": "Wanted to use the word vindicated. I have been working on AI, despite facing a ton of headwinds and disapproval from my team as well as my Dad.But lately, he has openly praised my work.",
+              "feelings": [
+                "Valued",
+                "Respected",
+                "Accepted",
+                "Proud"
+              ]
+            }
+          ],
+          "whyItMatters1": "Gives me confidence to take over the business, feel that I am not a good for nothing and just another nepo baby",
+          "whyItMatters2": "Gives me self worth. ",
+          "whyItMatters3": "Because I want to win and have had many losses prior to this",
+          "whatIRealize": "I am somewhat egotistical. "
+        },
+        "family": {
+          "feelings": [
+            "Guilty"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1776154276590-ld4028l9zyo",
+              "event": "When I think about my kids, or when I see that they are going through life without me. ",
+              "feelings": [
+                "Guilty"
+              ]
+            }
+          ],
+          "whyItMatters1": "I don't feel like I'm a good father. ",
+          "whyItMatters2": "I don't spend enough time with them and I feel that time is running out",
+          "whyItMatters3": "Fear of Losing out on fatherhood. ",
+          "whatIRealize": "Maybe it's about my own insecurity then it is about the guilt."
+        },
+        "me": {
+          "feelings": [
+            "Lonely",
+            "Vulnerable",
+            "Abandoned",
+            "Isolated",
+            "Depressed",
+            "Empty"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1776153913330-mz3nd1fz2h",
+              "event": "When I go to bed at night. I unwittingly have flash backs of events, of failures, of successes and I feel that life has no meaning",
+              "feelings": [
+                "Lonely",
+                "Vulnerable",
+                "Abandoned",
+                "Isolated",
+                "Depressed",
+                "Empty"
+              ]
+            },
+            {
+              "id": "trigger-1776154014091-5488lkjr8ij",
+              "event": "Finding out that I have lost friends and relationships along the way, either through death, or just because...",
+              "feelings": []
+            }
+          ],
+          "whyItMatters1": "I don't know what i'm fighting for, and whether it is worth it",
+          "whyItMatters2": "Need a reason to keep me going. ",
+          "whyItMatters3": "Helps me become focused. ",
+          "whatIRealize": "I've been floating around with no prupose."
+        },
+        "next30": {
+          "feelings": [
+            "Excited",
+            "Anxious"
+          ],
+          "outlook": "Implementation of AI within the company\n\nA lot of headwinds in the business because of the Iran war"
+        },
+        "groupLearning": "N/A",
+        "explore": "N/A"
+      },
+      "submittedAt": "2026-04-14T08:15:50.593Z"
     }
   },
   "parkingLotState": {
