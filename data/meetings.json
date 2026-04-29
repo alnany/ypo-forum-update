@@ -469,6 +469,96 @@
         "explore": "N/A"
       },
       "submittedAt": "2026-04-14T08:15:50.593Z"
+    },
+    "Ethan:2026-03-27": {
+      "member": "Ethan",
+      "meetingId": "2026-03-27",
+      "displayDate": "March 27, 2026",
+      "location": "Macau",
+      "data": {
+        "memberName": "Ethan",
+        "forumName": "Forum 11",
+        "meetingId": "2026-03-27",
+        "date": "March 27, 2026",
+        "location": "Macau",
+        "work": {
+          "feelings": [
+            "Depressed",
+            "Stressed",
+            "Overwhelmed"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1777125377526-38loi4rofrn",
+              "event": "Not enough sleep, hard to balance among work, family and personal. ",
+              "feelings": [
+                "Depressed",
+                "Overwhelmed",
+                "Stressed"
+              ]
+            }
+          ],
+          "whyItMatters1": "Without proper rest I have no health",
+          "whyItMatters2": "I can’t fulfill my work expectations",
+          "whyItMatters3": "I cant be the example of others ",
+          "whatIRealize": "I want to be a good leader"
+        },
+        "family": {
+          "feelings": [
+            "Optimistic"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1777475334303-2vs2ek1uxk4",
+              "event": "Planed a birthday trip for my daugher",
+              "feelings": [
+                "Optimistic"
+              ]
+            }
+          ],
+          "whyItMatters1": "Getting family together to do a trip",
+          "whyItMatters2": "Bonding",
+          "whyItMatters3": "The family members don’t really have good relationships ",
+          "whatIRealize": "I like to fix things and enjoy peace"
+        },
+        "me": {
+          "feelings": [
+            "Stressed",
+            "Depressed"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1777475229622-669vqo1ergd",
+              "event": "Not enough rest and personal space",
+              "feelings": [
+                "Stressed"
+              ]
+            },
+            {
+              "id": "trigger-1777475237809-4ml688tb8pa",
+              "event": "There’s no stop between work and home",
+              "feelings": [
+                "Depressed"
+              ]
+            }
+          ],
+          "whyItMatters1": "I need personal space ",
+          "whyItMatters2": "I can achieve my personal goals",
+          "whyItMatters3": "This is why I live and how I live",
+          "whatIRealize": "There’s a lot of things to be done for myself "
+        },
+        "next30": {
+          "feelings": [
+            "Optimistic",
+            "Tired",
+            "Unfocused"
+          ],
+          "outlook": "It’s challenging to fix childhood drama. Almost it is impossible. "
+        },
+        "groupLearning": "",
+        "explore": ""
+      },
+      "submittedAt": "2026-04-29T15:12:19.205Z"
     }
   },
   "parkingLotState": {
