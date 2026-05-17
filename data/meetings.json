@@ -6,6 +6,13 @@
       "displayDate": "March 27, 2026",
       "location": "Macau",
       "createdAt": "2026-04-10T17:21:19.609Z"
+    },
+    {
+      "id": "2026-06-12",
+      "date": "2026-06-12",
+      "displayDate": "June 12, 2026",
+      "location": "HCM",
+      "createdAt": "2026-05-17T13:56:46.391Z"
     }
   ],
   "updates": {
