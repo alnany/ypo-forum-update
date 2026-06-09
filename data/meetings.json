@@ -223,7 +223,7 @@
           "whyItMatters1": "I always put myself and my family down, we are not academics not in our blood, sold ourselves short. We are a work ethic family, scrappy , figure it out types",
           "whyItMatters2": "My general negative self talk, maybe modeling for my kids the same unconsciously",
           "whyItMatters3": "",
-          "whatIRealize": "Need to bring more optimism to family aspect not just career and business aspect, there is a way to have it all\u2026 business me, family. Need to be more intentional"
+          "whatIRealize": "Need to bring more optimism to family aspect not just career and business aspect, there is a way to have it all… business me, family. Need to be more intentional"
         },
         "me": {
           "feelings": [
@@ -237,7 +237,7 @@
           "whyItMatters1": "Ties back to identity",
           "whyItMatters2": "",
           "whyItMatters3": "",
-          "whatIRealize": "I\u2019m adhd but I love building, I assumed I dislike being hands on but with AI I\u2019m hooked, slow but surely making progress"
+          "whatIRealize": "I’m adhd but I love building, I assumed I dislike being hands on but with AI I’m hooked, slow but surely making progress"
         },
         "next30": {
           "feelings": [
@@ -506,7 +506,7 @@
             }
           ],
           "whyItMatters1": "Without proper rest I have no health",
-          "whyItMatters2": "I can\u2019t fulfill my work expectations",
+          "whyItMatters2": "I can’t fulfill my work expectations",
           "whyItMatters3": "I cant be the example of others ",
           "whatIRealize": "I want to be a good leader"
         },
@@ -525,7 +525,7 @@
           ],
           "whyItMatters1": "Getting family together to do a trip",
           "whyItMatters2": "Bonding",
-          "whyItMatters3": "The family members don\u2019t really have good relationships ",
+          "whyItMatters3": "The family members don’t really have good relationships ",
           "whatIRealize": "I like to fix things and enjoy peace"
         },
         "me": {
@@ -543,7 +543,7 @@
             },
             {
               "id": "trigger-1777475237809-4ml688tb8pa",
-              "event": "There\u2019s no stop between work and home",
+              "event": "There’s no stop between work and home",
               "feelings": [
                 "Depressed"
               ]
@@ -552,7 +552,7 @@
           "whyItMatters1": "I need personal space ",
           "whyItMatters2": "I can achieve my personal goals",
           "whyItMatters3": "This is why I live and how I live",
-          "whatIRealize": "There\u2019s a lot of things to be done for myself "
+          "whatIRealize": "There’s a lot of things to be done for myself "
         },
         "next30": {
           "feelings": [
@@ -560,12 +560,56 @@
             "Tired",
             "Unfocused"
           ],
-          "outlook": "It\u2019s challenging to fix childhood drama. Almost it is impossible. "
+          "outlook": "It’s challenging to fix childhood drama. Almost it is impossible. "
         },
         "groupLearning": "",
         "explore": ""
       },
       "submittedAt": "2026-04-29T15:12:19.205Z"
+    },
+    "Chris:2026-06-12": {
+      "member": "Chris",
+      "meetingId": "2026-06-12",
+      "displayDate": "June 12, 2026",
+      "location": "HCM",
+      "data": {
+        "memberName": "Chris",
+        "forumName": "Forum 11",
+        "meetingId": "2026-06-12",
+        "date": "June 12, 2026",
+        "location": "HCM",
+        "work": {
+          "feelings": [],
+          "triggers": [],
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "family": {
+          "feelings": [],
+          "triggers": [],
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "me": {
+          "feelings": [],
+          "triggers": [],
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "next30": {
+          "feelings": [],
+          "outlook": ""
+        },
+        "groupLearning": "",
+        "explore": ""
+      },
+      "submittedAt": "2026-06-09T06:48:00.445Z"
     }
   },
   "parkingLotState": {
