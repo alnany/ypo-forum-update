@@ -266,118 +266,116 @@
         "location": "Macau",
         "work": {
           "feelings": [
-            "Excited",
-            "Frustrated",
-            "Hopeful"
+            "Annoyed",
+            "Distant",
+            "Disappointed"
           ],
           "triggers": [
             {
-              "id": "trigger-1776094264031-7mvgari58jn",
-              "event": "home service is going to be big",
+              "id": "trigger-1781147714190-p50s45nf9t",
+              "event": "Slow actions and results ",
               "feelings": [
-                "Excited"
+                "Annoyed"
               ]
             },
             {
-              "id": "trigger-1776095213229-75esojbyzp3",
-              "event": "david is not the right person",
+              "id": "trigger-1781147849447-hrtqrn6kd7",
+              "event": "Obsolete but not redundant ",
               "feelings": [
-                "Frustrated"
+                "Distant"
               ]
             },
             {
-              "id": "trigger-1776095282666-kw7hi79o2mb",
-              "event": "buying landscape business",
+              "id": "trigger-1781147854897-niaw4h7nzb",
+              "event": "Slow progress affects planning ",
               "feelings": [
-                "Hopeful"
+                "Disappointed"
               ]
             }
           ],
-          "whyItMatters1": "increase profit for exit or just earn",
-          "whyItMatters2": "realize the dream of wealth",
-          "whyItMatters3": "generational wealth",
-          "whatIRealize": "i visualize and let people do it\ni care and am worried about my children and their children\n"
+          "whyItMatters1": "Profits",
+          "whyItMatters2": "Mangae staff, own life planning ",
+          "whyItMatters3": "Watches, house, legacy planning ",
+          "whatIRealize": "I've worked hard enough and is fortunate it is successful "
         },
         "family": {
           "feelings": [
-            "Worried",
-            "Tired",
-            "Thankful"
+            "Hopeful",
+            "Anxious",
+            "Disappointed"
           ],
           "triggers": [
             {
-              "id": "trigger-1776095782057-ccdmid8huuc",
-              "event": "",
+              "id": "trigger-1781148567087-gwcbiip3s94",
+              "event": "Kids growing up, getting along better",
               "feelings": [
-                "Worried"
+                "Hopeful"
               ]
             },
             {
-              "id": "trigger-1776095797615-2h79ip0zicr",
-              "event": "",
+              "id": "trigger-1781148580101-u0ejt2u5wrm",
+              "event": "AI",
               "feelings": [
-                "Tired"
+                "Anxious"
               ]
             },
             {
-              "id": "trigger-1776095832255-10u5b2iipclm",
-              "event": "",
+              "id": "trigger-1781148646790-scyjueqf4om",
+              "event": "Wife",
               "feelings": [
-                "Thankful"
+                "Disappointed"
               ]
             }
           ],
-          "whyItMatters1": "AI is changing everything, dont know how to adapt",
-          "whyItMatters2": "children's future",
-          "whyItMatters3": "because they are mine",
-          "whatIRealize": "i care and want them to be good, useful and successful"
+          "whyItMatters1": "Children closer relationship ",
+          "whyItMatters2": "Family ties",
+          "whyItMatters3": "Legacy",
+          "whatIRealize": "Legacy"
         },
         "me": {
           "feelings": [
             "Excited",
             "Scared",
-            "Aroused"
+            "Annoyed"
           ],
           "triggers": [
             {
-              "id": "trigger-1776095552681-w0upgffzrr",
-              "event": "new friend",
+              "id": "trigger-1781148390758-prjxkuobky",
+              "event": "Ss",
               "feelings": [
                 "Excited"
               ]
             },
             {
-              "id": "trigger-1776095562547-a39zti58ivm",
-              "event": "afraid of consequenes",
+              "id": "trigger-1781148404562-hy1iwkzt80g",
+              "event": "Ss",
               "feelings": [
                 "Scared"
               ]
             },
             {
-              "id": "trigger-1776095624683-dd2ol8cayy7",
-              "event": "new friend",
+              "id": "trigger-1781148423143-fcdwyv9qls4",
+              "event": "Wife",
               "feelings": [
-                "Aroused"
+                "Annoyed"
               ]
             }
           ],
-          "whyItMatters1": "revisit  new old experience",
-          "whyItMatters2": "not really that important",
-          "whyItMatters3": "i'm bored and stupid",
-          "whatIRealize": "i'm bored and stupid"
+          "whyItMatters1": "Ss",
+          "whyItMatters2": "Ss",
+          "whyItMatters3": "Ss",
+          "whatIRealize": "Happy i am not like before, hopefully I can be able to manage it well"
         },
         "next30": {
           "feelings": [
-            "Optimistic",
-            "Anxious",
             "Tired"
           ],
-          "outlook": "working on the home services and landscape acquisition\n"
+          "outlook": "Travelling "
         },
-        "groupLearning": "AI adaption ",
+        "groupLearning": "AI",
         "explore": ""
       },
-      "submittedAt": "2026-04-13T16:02:07.928Z"
+      "submittedAt": "2026-06-11T03:34:18.286Z"
     },
     "Julian:2026-03-27": {
       "member": "Julian",
