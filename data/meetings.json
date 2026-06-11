@@ -608,6 +608,130 @@
         "explore": ""
       },
       "submittedAt": "2026-06-09T06:48:00.445Z"
+    },
+    "Mike:2026-06-12": {
+      "member": "Mike",
+      "meetingId": "2026-06-12",
+      "displayDate": "June 12, 2026",
+      "location": "HCM",
+      "data": {
+        "memberName": "Mike",
+        "forumName": "Forum 11",
+        "meetingId": "2026-06-12",
+        "date": "June 12, 2026",
+        "location": "HCM",
+        "work": {
+          "feelings": [
+            "Annoyed",
+            "Unfocused",
+            "Empty"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1780939385432-lqcoiusqf6",
+              "event": "Staff, things moving slow\n",
+              "feelings": [
+                "Annoyed"
+              ]
+            },
+            {
+              "id": "trigger-1780939416039-acq0975enj",
+              "event": "I'm obsolete",
+              "feelings": [
+                "Unfocused"
+              ]
+            },
+            {
+              "id": "trigger-1780939444130-4vy1dg108dd",
+              "event": "Not redundant ",
+              "feelings": [
+                "Empty"
+              ]
+            }
+          ],
+          "whyItMatters1": "I'm impatient ",
+          "whyItMatters2": "Things need time",
+          "whyItMatters3": "I need to do things that need money",
+          "whatIRealize": "I don't really care how it's done, as long as it is"
+        },
+        "family": {
+          "feelings": [
+            "Optimistic",
+            "Thankful",
+            "Anxious"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1780939660783-16o4vtsk2o6",
+              "event": "Ryan and miesha growing up",
+              "feelings": [
+                "Optimistic"
+              ]
+            },
+            {
+              "id": "trigger-1780939663030-o4mubdt722n",
+              "event": "Less but not zero negative energy",
+              "feelings": [
+                "Thankful"
+              ]
+            },
+            {
+              "id": "trigger-1780939679840-lpy0fov6jy",
+              "event": "AI",
+              "feelings": [
+                "Anxious"
+              ]
+            }
+          ],
+          "whyItMatters1": "They won't grow younger",
+          "whyItMatters2": "I am getting old",
+          "whyItMatters3": "Worried for their futyre",
+          "whatIRealize": "I am a carer, giver"
+        },
+        "me": {
+          "feelings": [
+            "Confused",
+            "Scared",
+            "Frustrated"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1780939474430-286tozbz9ty",
+              "event": "SS",
+              "feelings": [
+                "Confused"
+              ]
+            },
+            {
+              "id": "trigger-1780939619990-6qthjczt6ug",
+              "event": "SS",
+              "feelings": [
+                "Scared"
+              ]
+            },
+            {
+              "id": "trigger-1780939636141-nsclnp283f",
+              "event": "SS",
+              "feelings": [
+                "Frustrated"
+              ]
+            }
+          ],
+          "whyItMatters1": "SS",
+          "whyItMatters2": "SS",
+          "whyItMatters3": "SS",
+          "whatIRealize": "I'm not like when young\nI can control but it will still hurt\nDumbass but interesting and fun"
+        },
+        "next30": {
+          "feelings": [
+            "Tired"
+          ],
+          "outlook": "Many trips"
+        },
+        "groupLearning": "AI",
+        "explore": ""
+      },
+      "submittedAt": "2026-06-11T05:15:02.539Z"
     }
   },
   "parkingLotState": {
