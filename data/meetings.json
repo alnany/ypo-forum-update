@@ -577,37 +577,101 @@
         "date": "June 12, 2026",
         "location": "HCM",
         "work": {
-          "feelings": [],
-          "triggers": [],
-          "whyItMatters1": "",
-          "whyItMatters2": "",
-          "whyItMatters3": "",
-          "whatIRealize": ""
+          "feelings": [
+            "Overwhelmed",
+            "Pressured",
+            "Confident",
+            "Optimistic",
+            "Creative",
+            "Eager",
+            "Anxious"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781169673336-gla6zqvx5p",
+              "event": "Super tight on cashflow again.  Bonbon needs to work because this is the gateway to everything.  ",
+              "feelings": [
+                "Overwhelmed",
+                "Pressured"
+              ]
+            },
+            {
+              "id": "trigger-1781170156980-bqf8w37707u",
+              "event": "Have been all in AI.  Dev team productivity has at least 10Xed, 1 man teams capabilities unlocked.  ",
+              "feelings": [
+                "Creative",
+                "Optimistic",
+                "Confident"
+              ]
+            },
+            {
+              "id": "trigger-1781170407826-sct7yf59wq",
+              "event": "My partner for Bonbon is super 大佬.  Working on projects with him that could lead to big things.  I must make Bonbon work, and the game project.",
+              "feelings": [
+                "Optimistic",
+                "Eager",
+                "Anxious"
+              ]
+            }
+          ],
+          "whyItMatters1": "Because I just need a break, so much potential with AI and there's so much I can do.  I just need to be free of money constraints once and for all.",
+          "whyItMatters2": "I want money and power so I can have freedom.",
+          "whyItMatters3": "For me that's required to be happy.",
+          "whatIRealize": "I need to keep steady and be very thoughtful on decisions because mistakes now is too costly."
         },
         "family": {
-          "feelings": [],
-          "triggers": [],
-          "whyItMatters1": "",
-          "whyItMatters2": "",
-          "whyItMatters3": "",
-          "whatIRealize": ""
+          "feelings": [
+            "Thankful"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781171783553-523dmy4fps",
+              "event": "Mom and dad came to Vietnam and had a good time.  Took my dad to the war museum he was very moved.  Took him to KTV to play with titties and he loved it.",
+              "feelings": [
+                "Thankful"
+              ]
+            }
+          ],
+          "whyItMatters1": "It's the least I can do.",
+          "whyItMatters2": "I'm unable to do more because of my work situation, I just don't have any room in my mind for family stuff.",
+          "whyItMatters3": "Hope this won't end up being a regret later in life after my parents pass away.",
+          "whatIRealize": "I've accepted the situation."
         },
         "me": {
-          "feelings": [],
-          "triggers": [],
-          "whyItMatters1": "",
-          "whyItMatters2": "",
-          "whyItMatters3": "",
-          "whatIRealize": ""
+          "feelings": [
+            "Numb",
+            "Eager",
+            "Worried",
+            "Stressed"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781171285105-vmfhs4qju0l",
+              "event": "Need to make money.  ",
+              "feelings": [
+                "Numb",
+                "Eager",
+                "Worried",
+                "Stressed"
+              ]
+            }
+          ],
+          "whyItMatters1": "It's what's holding me back from being able to truly enjoy life.",
+          "whyItMatters2": "Enjoying life is the whole point.",
+          "whyItMatters3": "Don't want to waste it.",
+          "whatIRealize": "Need to be patient still. But damn I really wish my best years weren't spent like this.  But then again plenty of people are way worst off I should remember to be grateful."
         },
         "next30": {
-          "feelings": [],
-          "outlook": ""
+          "feelings": [
+            "Optimistic",
+            "Anxious"
+          ],
+          "outlook": "Get Bonbon to work, deliver lots of value to Thomas' operation."
         },
-        "groupLearning": "",
-        "explore": ""
+        "groupLearning": "How's everyone feeling about forum.",
+        "explore": "Nothing for now."
       },
-      "submittedAt": "2026-06-09T06:48:00.445Z"
+      "submittedAt": "2026-06-11T10:04:06.273Z"
     },
     "Mike:2026-06-12": {
       "member": "Mike",
