@@ -21,6 +21,7 @@
     "whoAreYou": "你是谁？",
     "cancel": "取消",
     "status_submitted": "{{member}} — 已提交",
+    "tapToRead": "{{member}} — 已提交 · 点击查看",
     "status_pending": "{{member}} — 待提交",
     "delete_title": "🗑️ 删除会议",
     "delete_desc": "请输入管理员密码以删除此会议及其所有更新。",

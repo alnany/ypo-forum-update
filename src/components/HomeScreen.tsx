@@ -29,7 +29,7 @@ function MeetingCard({
 }: {
   meeting: Meeting
   onMyUpdate: (meeting: Meeting, member: MemberName) => void
-  onView: (meeting: Meeting) => void
+  onView: (meeting: Meeting, member?: string) => void
   onDeleted: (id: string) => void
 }) {
   const { t } = useTranslation()
@@ -180,7 +180,9 @@ function MeetingCard({
           return (
             <div
               key={m}
-              title={submitted ? t('meetingCard.status_submitted', { member: m }) : t('meetingCard.status_pending', { member: m })}
+              title={submitted ? t('meetingCard.tapToRead', { member: m }) : t('meetingCard.status_pending', { member: m })}
+              onClick={submitted ? () => onView(meeting, m) : undefined}
+              role={submitted ? 'button' : undefined}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -193,7 +195,10 @@ function MeetingCard({
                 fontWeight: submitted ? 700 : 400,
                 color: submitted ? color : '#94a3b8',
                 transition: 'all 0.2s',
+                cursor: submitted ? 'pointer' : 'default',
               }}
+              onMouseEnter={(e) => { if (submitted) { e.currentTarget.style.background = `${color}30`; e.currentTarget.style.transform = 'translateY(-1px)' } }}
+              onMouseLeave={(e) => { if (submitted) { e.currentTarget.style.background = `${color}15`; e.currentTarget.style.transform = 'none' } }}
             >
               <span
                 style={{
@@ -421,7 +426,7 @@ function NewMeetingForm({
 
 interface Props {
   onStartUpdate: (meeting: Meeting, member: MemberName) => void
-  onViewForum: (meeting: Meeting) => void
+  onViewForum: (meeting: Meeting, member?: string) => void
 }
 
 export default function HomeScreen({ onStartUpdate, onViewForum }: Props) {

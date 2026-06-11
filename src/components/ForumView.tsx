@@ -18,9 +18,10 @@ interface Props {
   meeting: Meeting
   onBack: () => void
   onEdit?: (member: string, data: FormState) => void
+  initialMember?: string | null
 }
 
-export default function ForumView({ meeting, onBack, onEdit }: Props) {
+export default function ForumView({ meeting, onBack, onEdit, initialMember }: Props) {
   const { t } = useTranslation()
   const [memberData, setMemberData] = useState<ForumUpdateRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -29,9 +30,17 @@ export default function ForumView({ meeting, onBack, onEdit }: Props) {
   useEffect(() => {
     setLoading(true)
     getMeetingUpdates(meeting.id).then((data) => {
-      if (data) setMemberData(data.members)
+      if (data) {
+        setMemberData(data.members)
+        // Deep-link: jump straight to a member's update if requested
+        if (initialMember) {
+          const record = data.members.find((m: ForumUpdateRecord) => m.member === initialMember)
+          if (record?.hasUpdate) setExpanded(initialMember)
+        }
+      }
       setLoading(false)
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [meeting.id])
 
   const expandedRecord = expanded ? memberData.find((m) => m.member === expanded) : null

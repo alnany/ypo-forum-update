@@ -722,6 +722,7 @@ export default function App() {
   const [screen, setScreen] = useState<AppScreen>('home')
   const [step, setStep] = useState<Step>('intro')
   const [activeMeeting, setActiveMeeting] = useState<Meeting | null>(null)
+  const [forumMember, setForumMember] = useState<string | null>(null)
   const [form, setForm] = useState<FormState>(makeInitialState())
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
@@ -736,6 +737,7 @@ export default function App() {
     setScreen('home')
     setStep('intro')
     setActiveMeeting(null)
+    setForumMember(null)
     setSubmitStatus('idle')
     window.scrollTo(0, 0)
   }
@@ -781,8 +783,9 @@ export default function App() {
     window.scrollTo(0, 0)
   }
 
-  const openForum = (meeting: Meeting) => {
+  const openForum = (meeting: Meeting, member?: string) => {
     setActiveMeeting(meeting)
+    setForumMember(member ?? null)
     setScreen('forum')
     window.scrollTo(0, 0)
   }
@@ -844,7 +847,7 @@ export default function App() {
         )}
 
         {screen === 'forum' && activeMeeting && (
-          <ForumView meeting={activeMeeting} onBack={goHome} onEdit={(member, data) => startEdit(activeMeeting, member, data)} />
+          <ForumView meeting={activeMeeting} initialMember={forumMember} onBack={goHome} onEdit={(member, data) => startEdit(activeMeeting, member, data)} />
         )}
 
         {screen === 'update' && (

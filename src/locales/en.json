@@ -21,6 +21,7 @@
     "whoAreYou": "Who are you?",
     "cancel": "Cancel",
     "status_submitted": "{{member}} — submitted",
+    "tapToRead": "{{member}} — submitted · tap to read",
     "status_pending": "{{member}} — pending",
     "delete_title": "🗑️ Delete Meeting",
     "delete_desc": "Enter the admin password to delete this meeting and all its updates.",
