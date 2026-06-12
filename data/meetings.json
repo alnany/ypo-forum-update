@@ -796,6 +796,89 @@
         "explore": ""
       },
       "submittedAt": "2026-06-11T05:15:02.539Z"
+    },
+    "Julian:2026-06-12": {
+      "member": "Julian",
+      "meetingId": "2026-06-12",
+      "displayDate": "June 12, 2026",
+      "location": "HCM",
+      "data": {
+        "memberName": "Julian",
+        "forumName": "Forum 11",
+        "meetingId": "2026-06-12",
+        "date": "June 12, 2026",
+        "location": "HCM",
+        "work": {
+          "feelings": [
+            "Optimistic",
+            "Proud",
+            "Worried",
+            "Pressured",
+            "Ashamed"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781226697469-y4okc05jgp",
+              "event": "Not sure why I'm not very open to share this out in the open, but I have been busy teaching the other business units about AI and our recent wins, but feel pressured cause i need to do better, feel that I did well because I was lucky, and i'm not sure that I can do the same in future. Feeling like an imposter",
+              "feelings": [
+                "Proud",
+                "Worried",
+                "Pressured",
+                "Ashamed"
+              ]
+            }
+          ],
+          "whyItMatters1": "I don't feel like celebrating my wins. I know what i've done, I know I did well, but there's this voice that says, oh, you're gonna fail and I am afraid it'll amplify my future losses.",
+          "whyItMatters2": "Loss of face, Tired of losing and failing. Feel condemned.",
+          "whyItMatters3": "I feel that I am not performing up to my full potential and will always be pitied. I have to be taken care of.",
+          "whatIRealize": "I am not as strong as I think I am. I am afraid of losing and that might be holding me back. I need to have more confidence in what I do. I need to embrace failures and see it as a journey, not a destination."
+        },
+        "family": {
+          "feelings": [],
+          "triggers": [],
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "me": {
+          "feelings": [
+            "Helpless",
+            "Tired",
+            "Anxious"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781227196309-xeg5beq6kun",
+              "event": "Just life in general, especially at night, or when I am reflecting. The meaning of life seems to elude me. ",
+              "feelings": [
+                "Helpless",
+                "Tired"
+              ]
+            },
+            {
+              "id": "trigger-1781227296241-1arpfrs3m5m",
+              "event": "I had wanted to invite President Jokowi for our Jogjakarta event and was hoping to have him come to visit us in SIngapore in August, but that is in flames, because of the current political unrest in Indonesia",
+              "feelings": [
+                "Anxious"
+              ]
+            }
+          ],
+          "whyItMatters1": "Don't feel it's right. We should stand by a friend. and my faimly's event to not invite Jokowi for our event will burn bridges",
+          "whyItMatters2": "I feel that I have failed. again. I have let down the chapter, ",
+          "whyItMatters3": "I will need to think of something better",
+          "whatIRealize": "I am mentally weak at the moment and that tiny failures really can derail any positivity I have."
+        },
+        "next30": {
+          "feelings": [
+            "Optimistic"
+          ],
+          "outlook": "Things are going great. Q1 was fantastic, we had a slight dip oin Q2, but we are opening 4 stores, embracing AI, bringing in new brands. Things seem to be good. I do want to travel a bit more"
+        },
+        "groupLearning": "How to keep positive. Even when things are good, I seem to be able to sabotage happiness by being negative. ",
+        "explore": ""
+      },
+      "submittedAt": "2026-06-12T01:29:43.758Z"
     }
   },
   "parkingLotState": {
