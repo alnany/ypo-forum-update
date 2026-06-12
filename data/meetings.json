@@ -879,6 +879,97 @@
         "explore": "Our time together as a forum. How do we make our time worthwhile and what does everyone want out of forum?"
       },
       "submittedAt": "2026-06-12T01:32:24.681Z"
+    },
+    "Ethan:2026-06-12": {
+      "member": "Ethan",
+      "meetingId": "2026-06-12",
+      "displayDate": "June 12, 2026",
+      "location": "HCM",
+      "data": {
+        "memberName": "Ethan",
+        "forumName": "Forum 11",
+        "meetingId": "2026-06-12",
+        "date": "June 12, 2026",
+        "location": "HCM",
+        "work": {
+          "feelings": [
+            "Anxious",
+            "Stressed",
+            "Lonely"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781245870031-n041ia8tsx",
+              "event": "My daughter threw up 4-6 times because of my negligence not taking care of her",
+              "feelings": [
+                "Anxious"
+              ]
+            },
+            {
+              "id": "trigger-1781245973764-cv6387cxq3",
+              "event": "I have no break between work, family and personal. My sleep had been bad. Although recently it’s improving",
+              "feelings": [
+                "Stressed"
+              ]
+            },
+            {
+              "id": "trigger-1781246029692-kjxa0j43de",
+              "event": "I feel like I’m not appreciated.",
+              "feelings": [
+                "Lonely"
+              ]
+            }
+          ],
+          "whyItMatters1": "I love my daughter, not being able to take care of her shows I am not a good father and ultimately she suffers.",
+          "whyItMatters2": "Without enough and proper rest I get angry easily. And quite often that anger goes to my family member. Because at work place I have to be professional. ",
+          "whyItMatters3": "I want to live in a happy life",
+          "whatIRealize": "I prob have too many things going on in life and I expect myself excel at everything yet I get exhausted of such expectations and ultimately I’m not present in every role I am in."
+        },
+        "family": {
+          "feelings": [],
+          "triggers": [],
+          "whyItMatters1": "",
+          "whyItMatters2": "",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "me": {
+          "feelings": [
+            "Optimistic",
+            "Proud"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781246411438-7tvtwm1ib4",
+              "event": "AUM is climbing to AH every week. 5 billion RMB nkw",
+              "feelings": [
+                "Optimistic"
+              ]
+            },
+            {
+              "id": "trigger-1781246417775-u5p5kvem4jk",
+              "event": "Funds performance is at top 3 in China.",
+              "feelings": [
+                "Proud"
+              ]
+            }
+          ],
+          "whyItMatters1": "Size matters. AUM speaks for itself. I am approving I can build a good company",
+          "whyItMatters2": "Able to compete and win is important to me",
+          "whyItMatters3": "It seems like my life is built around competition",
+          "whatIRealize": "I think my upbringing has a lot to do with this. I had to fight to rise up. For me, Being successful, to win is not a result, it’s a need."
+        },
+        "next30": {
+          "feelings": [
+            "Courageous",
+            "Busy"
+          ],
+          "outlook": "Work wise, to close some important candidates and raise more AUm and make progress with my HK hedge fund license. Family wise, take care of baby and wife, and focus on them, really be there for them. Personal wise, get better sleep and workout. Stop doing nonsense.,"
+        },
+        "groupLearning": "How do you decide when moving to a new location? ",
+        "explore": "I am planning to move to HK with my family."
+      },
+      "submittedAt": "2026-06-12T06:50:41.738Z"
     }
   },
   "parkingLotState": {
