@@ -970,6 +970,139 @@
         "explore": "I am planning to move to HK with my family."
       },
       "submittedAt": "2026-06-12T06:50:41.738Z"
+    },
+    "Eric:2026-06-12": {
+      "member": "Eric",
+      "meetingId": "2026-06-12",
+      "displayDate": "June 12, 2026",
+      "location": "HCM",
+      "data": {
+        "memberName": "Eric",
+        "forumName": "Forum 11",
+        "meetingId": "2026-06-12",
+        "date": "June 12, 2026",
+        "location": "HCM",
+        "work": {
+          "feelings": [
+            "Content",
+            "Optimistic",
+            "Eager",
+            "Overwhelmed"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781033694830-ug0tsdo4s3",
+              "event": "Know where I stand with the company, it’s ok not to go after HF, focused on creating value for my family. But big factor was time commitment and what it meant to give up family time",
+              "feelings": [
+                "Content"
+              ]
+            },
+            {
+              "id": "trigger-1781033719629-ulztxki4fxo",
+              "event": "St. Louis still performing, a lot of loose ends to fix but cleaning things up. ",
+              "feelings": [
+                "Optimistic"
+              ]
+            },
+            {
+              "id": "trigger-1781033731943-i7061bje64n",
+              "event": "Being able to scale without being at site full time. Continue to build a team to scale",
+              "feelings": [
+                "Eager"
+              ]
+            },
+            {
+              "id": "trigger-1781033793355-2ldjiewiugi",
+              "event": "Uncertainty, struggling to come to a conclusion and playing out the scenarios. ",
+              "feelings": [
+                "Overwhelmed"
+              ]
+            }
+          ],
+          "whyItMatters1": "Proving myself",
+          "whyItMatters2": "Building legacy that no one can take away ",
+          "whyItMatters3": "",
+          "whatIRealize": "Maybe I do care what people think, I want control and power more than I think?"
+        },
+        "family": {
+          "feelings": [
+            "Proud",
+            "Respected",
+            "Lonely"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781221940211-gr07vzyhnia",
+              "event": "Witness the milestones of kids progress in instruments and golf",
+              "feelings": [
+                "Proud"
+              ]
+            },
+            {
+              "id": "trigger-1781221949504-f9n68jvsubt",
+              "event": "Kids want to be with me and spend time, they seem to confide in me.",
+              "feelings": [
+                "Respected"
+              ]
+            },
+            {
+              "id": "trigger-1781222085541-5ng57ftclcl",
+              "event": "Wife has her moments, upset about so much travel, doesn’t understand we acquired a new business and it requires time. Frustrated she does not get it. Lack of support makes the work tiring. ",
+              "feelings": [
+                "Lonely"
+              ]
+            }
+          ],
+          "whyItMatters1": "Bread winner but treated as helper. ",
+          "whyItMatters2": "Lack of respect, dignity ",
+          "whyItMatters3": "",
+          "whatIRealize": ""
+        },
+        "me": {
+          "feelings": [
+            "Tired",
+            "Proud",
+            "Inspired"
+          ],
+          "triggers": [
+            {
+              "id": "trigger-1781034206529-kk6oc8ducy",
+              "event": "Rushing and trying to stay involved with kids activities. Dedicating all free time or outside of work",
+              "feelings": [
+                "Tired"
+              ]
+            },
+            {
+              "id": "trigger-1781034228682-inasi1mj0gi",
+              "event": "",
+              "feelings": [
+                "Proud"
+              ]
+            },
+            {
+              "id": "trigger-1781034284435-5cq4uxncrs5",
+              "event": "Watching them overcome the challenges, makes me want to be better. ",
+              "feelings": [
+                "Inspired"
+              ]
+            }
+          ],
+          "whyItMatters1": "I want to all, torn between family and work. ",
+          "whyItMatters2": "Kids and family well being is just as important factor of success ",
+          "whyItMatters3": "Legacy??",
+          "whatIRealize": ""
+        },
+        "next30": {
+          "feelings": [
+            "Excited",
+            "Insecure"
+          ],
+          "outlook": "Summer, slowing down alittle bit more and spend time with family. \n\n"
+        },
+        "groupLearning": "",
+        "explore": "I think the way I love my family might sometimes feel like control, and I don’t fully know how to tell the difference yet."
+      },
+      "submittedAt": "2026-06-13T02:39:58.928Z"
     }
   },
   "parkingLotState": {
